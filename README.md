@@ -1,6 +1,6 @@
-Professional Software Projects
+### Professional Software Projects
 
-Key Topics:
+## Key Topics:
 
 1. Project Description  
 2. How to Install and Run the Project
@@ -8,13 +8,13 @@ Key Topics:
 4. References
 
 
-Project Descripton
+## Project Descripton
 
 For the software projects module we have been tasked with designing and building an application for our clients. Our clients who are MTa immersion are a professional organisation that serves people who are interested in experiential education. Their target audience includes "faculty, staff, administrators, and students in higher education, as well as K-12 educators, youth development professionals, corporate trainers, and outdoor educators." 
 
 In terms of software this has been detailed in the client’s specification. It can be split into frontend and backend. For the frontend, the user interface, the project specification states that MaterialUI is to be used. MaterialUI is a JavaScript framework which allows a developer to build a user interface. MaterialUI also works using the React.js framework internally. For multiple connections we have used Socket.io. This allows for multiple users to connect to our application from seperate computers. MongoDB with Nest.js and TypeScript to be used in connection with the database.
 
-How to Install and Run the Project
+## How to Install and Run the Project
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -61,14 +61,15 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 
-Collaborators
+## Collaborators
 
 Ishaq Kamal Chowdhury - c2091112@exchange.shu.ac.uk  
 Joey Ball - c0011779@exchange.shu.ac.uk  
 Blessing Egodibie - c1009210@exchange.shu.ac.uk  
 Ibrahim Ali - c0046944@hallam.shu.ac.uk  
 
-References
+## References
 
 https://youtu.be/djMy4QsPWiI  
 https://youtu.be/djMy4QsPWiI  
+https://github.com/facebook/create-react-app/blob/main/packages/cra-template/template/README.md  
