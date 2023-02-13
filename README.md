@@ -10,4 +10,7 @@ How to Install and Run the Project
 
 Collaborators
 
-Ishaq Kamal
+Ishaq Kamal Chowdhury - c2091112@exchange.shu.ac.uk
+Joey Ball - c0011779@exchange.shu.ac.uk
+Blessing Egodibie - c1009210@exchange.shu.ac.uk
+Ibrahim Ali - c0046944@hallam.shu.ac.uk
