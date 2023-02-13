@@ -36,3 +36,19 @@
     transform: rotate(360deg);
   }
 }
+body {
+  font-family: sans-serif;
+  text-shadow: 1px 1px #999;
+  padding: 25px;
+  background-color: black;
+  color: white;
+  font-size: 25px;
+}
+.GameBox {
+  width: 60%;
+  height: 500px;
+  background-color: white;
+  color: black;
+  padding-left: 20%;
+  padding-right:20%;
+}

@@ -3,9 +3,12 @@ import './App.css';
 function App() {
   return (
     <div className="App">
-      <input/>
-      <button>submit</button>
+      <h1>PacMan Prototype</h1>
+      <div className="GameBox">
+      hello
+      </div>
     </div>
+  
   );
 }
 
