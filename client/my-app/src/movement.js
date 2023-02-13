@@ -7,19 +7,44 @@ window.addEventListener('load', () => {
     character.style.top = 0;
 });
 
-window.addEventListener('keyup', (e) => {
-    switch (e.key) {
-        case 'ArrowLeft':
+/*
+window.onkeydown = checkKey;
+
+function checkKey(e) {
+
+    e = e || window.event;
+
+    if (e.keyCode == '38') {
+        character.style.top = parseInt(character.style.top) - moveBy + 'px';
+    }
+    else if (e.keyCode == '40') {
+        character.style.top = parseInt(character.style.top) + moveBy + 'px';
+    }
+    else if (e.keyCode == '37') {
+        haracter.style.left = parseInt(character.style.left) - moveBy + 'px';
+    }
+    else if (e.keyCode == '39') {
+        character.style.left = parseInt(character.style.left) + moveBy + 'px';
+    }
+
+}
+*/
+
+window.addEventListener('onkeypress', function(e){
+    switch (e.keyCode) {
+        case 37:
             character.style.left = parseInt(character.style.left) - moveBy + 'px';
             break
-        case 'ArrowRight':
+        case 39:
             character.style.left = parseInt(character.style.left) + moveBy + 'px';
             break
-        case 'ArrowUp':
+        case 38:
             character.style.top = parseInt(character.style.top) - moveBy + 'px';
             break
-        case 'ArrowDown':
+        case 40:
             character.style.top = parseInt(character.style.top) + moveBy + 'px';
+            break
+        default:
             break
     }
 });

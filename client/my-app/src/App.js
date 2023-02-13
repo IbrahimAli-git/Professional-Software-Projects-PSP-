@@ -7,7 +7,6 @@ function App() {
       <div className="GameBox">
         hello world
         <div class = "character"></div>
-        <script src = "movement.js"></script>
       </div>
     </div>
   );
