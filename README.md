@@ -1,5 +1,13 @@
 Professional Software Projects
 
+Key Topics:
+
+1. Project Description  
+2. How to Install and Run the Project
+3. Collaborators
+4. References
+
+
 Project Descripton
 
 For the software projects module we have been tasked with designing and building an application for our clients. Our clients who are MTa immersion are a professional organisation that serves people who are interested in experiential education. Their target audience includes "faculty, staff, administrators, and students in higher education, as well as K-12 educators, youth development professionals, corporate trainers, and outdoor educators." 
