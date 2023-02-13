@@ -1,5 +1,5 @@
 let character = document.querySelector('.character');
-let moveBy = 1000;
+let moveBy = 50;
 
 window.addEventListener('load', () => {
     character.style.position = 'absolute';
