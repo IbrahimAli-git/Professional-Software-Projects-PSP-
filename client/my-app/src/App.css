@@ -52,3 +52,10 @@ body {
   padding-left: 20%;
   padding-right:20%;
 }
+
+.character{
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  background-color: yellow;
+}
