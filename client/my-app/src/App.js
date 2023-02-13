@@ -5,7 +5,7 @@ function App() {
     <div className="App">
       <h1>PacMan Prototype</h1>
       <div className="GameBox">
-      hello
+      hello world
       </div>
     </div>
   
