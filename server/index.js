@@ -1,18 +1,28 @@
-const { Socket } = require("dgram")
 const express = require("express")
 const app = express()
-const server = require("http").createServer(app)
-const io = require("socket.io")(server, {cors: {origin: "*"}})
+const http = require("http")
+const cors = require("cors")
+const {Server} = require("socket.io")
+app.use(cors())
 
-server.maxConnections = 4
+const server = http.createServer(app)
 
-app.set("view engine", "html")
-
-app.get("/home", (req, res) => {
-    res.render("home")
+const io = new Server (server, {
+    cors: {
+        origin: "http://localhost:3000",
+        methods: ["GET", "POST"]
+    }
 })
 
+io.on("connection", (socket) => {
+    let id = socket.id;
+    console.log("User connected: " + id)
+
+    socket.on("disconnect", (socket) => {
+        console.log("User disconnected: " + id)
+    })
+})
 
 server.listen(3001, () => {
-    console.log("Server running...")
+    console.log("Server running ... ")
 })
