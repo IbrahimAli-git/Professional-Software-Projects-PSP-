@@ -19,15 +19,20 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
     let id = socket.id;
     let playernum=0;
-    
+
 
     console.log("User connected: " + id)
     
-    for (var i  = 0; i < 4; i++) {
-        playernum++
-        if (players[i] == 0) {
-            players[i] = id;
-            break;
+    if (players[0] !== 0 && players[1] !== 0 && players[2] !== 0 && players[3] !== 0){
+        alert("Room is full")
+    }
+    else{
+        for (var i  = 0; i < 4; i++) {
+            playernum++
+            if (players[i] == 0) {
+                players[i] = id;
+                break;
+            }
         }
     }
     socket.emit("receive_index", playernum)
