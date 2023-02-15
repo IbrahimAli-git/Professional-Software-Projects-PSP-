@@ -62,12 +62,13 @@ footer {
 }
 
 .GameBox {
-  width: 97%;
+  width: 800px;
   height: 450px;
-  background-color: white;
+  background-color: lightgoldenrodyellow;
   color: black;
   position: relative;
-  margin: 20px;  
+  margin: auto;  
+  margin-top: 50px;
 }
 
 .character{
