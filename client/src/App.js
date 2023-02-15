@@ -31,23 +31,32 @@ $(window).keydown(function (e)
 $(window).keyup(function (e) { d[e.which] = false; });
 
 setInterval(function () {
+  var vert;
+  var hor;
   box.css({
     left: function (i, v) {
       var h = newh(v, 37, 39);
-       socket.emit("send_move", h) 
+       //socket.emit("send_move", h)
+       hor = h;
       return h },
     top: function (i, v) {
       var v = newh(v, 38, 40);
-       socket.emit("send_move", v) 
-      return v  }
+       //socket.emit("send_move", v) 
+       vert = v;
+      return v  }   
   });
+  socket.emit("send_move", {v: vert, h:hor})
 }, 20);
-socket.on("recieve_move",(data)=> {  
+socket.on("recieve_move",(data)=> {
+  var v = data.v;
+  var h = data.h;
+  
   console.log("received")
   d[data] = true;
+  console.log(data.v, data.h)
   box.css({
-    left: function (i, data) { return newh(data, 37, 39); },
-    top: function (i, data) { return newv(data, 38, 40); }
+    left: h,
+    top: v
   });
   d[data] = false;
 });
