@@ -21,6 +21,9 @@ io.on("connection", (socket) => {
     socket.on("disconnect", (socket) => {
         console.log("User disconnected: " + id)
     })
+    socket.on("send_move",(data)=>{
+        socket.broadcast.emit("recieve_move",data)
+    });
 })
 
 server.listen(3001, () => {
