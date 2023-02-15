@@ -29,7 +29,7 @@
 
 header {
   background-color: #222222;
-  height: 90px;
+  height: 88px;
 }
 
 header .title {
@@ -57,18 +57,81 @@ body {
   margin: 0px;
 }
 
+#overlay {
+  position: fixed;
+  display: none;
+  width: 85%;
+  height: 85%;
+  top: 7%;
+  left: 7%;
+  right: 7%;
+  bottom: 7%;
+  background-color: grey;
+  z-index: 2;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+#overlaybkg {
+  position: fixed;
+  display: none;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 2;
+  cursor: pointer;
+}
+
+#text{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: white;
+  transform: translate(-70%,-50%);
+  -ms-transform: translate(-50%,-50%);
+}
+
+.briefTitle {
+  font-size: 30px;
+}
+
+.briefDescription {
+  font-size: 20px;
+}
+
+/* br {
+  padding: 43px;
+}*/
+
 footer {
   background-color: black;
   color: black;
+  padding: 0.5%;
+}
+
+footer .briefbtn {
+  background-color: #A6A3A3;
+  color: black;
+  font-weight: bold;
+  position: relative;
+  padding: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border-radius: 10px;
+  left: 91%;
 }
 
 .GameBox {
-  width: 97%;
-  height: 450px;
+  width: 98.3%;
+  height: 440px;
   background-color: white;
   color: black;
   position: relative;
-  margin: 20px;  
+  margin: 0.8%; 
 }
 
 .character{

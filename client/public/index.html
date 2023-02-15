@@ -31,6 +31,38 @@
 
     <script src = "/client/my-app/src/App.js" ></script>
   </body>
+
+  <div id="overlay" onclick="off()">
+    <div id="overlaybkg">
+      <div id="text">
+        <h2 class="briefTitle">Pac Man Brief</h2>
+        <p class="briefDescription">
+          Welcome! 
+          <br><br>You have been assigned the left key, which means you can only move the character in the left direction.
+          <br><br>The aim of this activity is to work together with the rest of your team to guide pac man through the maze without being hit or eaten.
+          <br><br>Goodluck!
+          <br><br><br>
+        <em style="font-size: medium;">
+          You can only move the character left.
+          <br>Use the ‘left’ or ‘d’ key on your keyboard </em>
+        </p>
+      </div>
+    </div>
+  </div>
   
-  <!--<footer></footer>-->
+  <footer>
+    <button onclick="on()" class="briefbtn">Brief</button>
+  </footer>
+
+  <script>
+    function on() {
+      document.getElementById("overlay").style.display = "block"
+      document.getElementById("overlaybkg").style.display = "block";
+    }
+
+    function off() {
+      document.getElementById("overlay").style.display = "none"
+      document.getElementById("overlaybkg").style.display = "none";
+    }
+  </script>
 </html>
