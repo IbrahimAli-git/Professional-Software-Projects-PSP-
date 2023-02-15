@@ -12,7 +12,8 @@ var pane = $('#box'),
   wh = pane.width() - box.width(),
   wv = pane.height() - box.height(),
   d = {},
-  x = 10;
+  x = 10,
+  current = (300, 200);
 
 function newh(v, a, b) {
   var n = parseInt(v, 10) - (d[a] ? x : 0) + (d[b] ? x : 0);
@@ -40,7 +41,11 @@ setInterval(function () {
        vert = v;
       return v  }   
   });
-  socket.emit("send_move", {v: vert, h:hor})
+  if (current !== (hor, vert)){
+    socket.emit("send_move", {v: vert, h:hor})
+    current = (hor, vert);
+  }
+  
 }, 20);
 socket.on("receive_move",(data)=> {
   var v = data.v;
@@ -53,6 +58,7 @@ socket.on("receive_move",(data)=> {
     left: h,
     top: v
   });
+  current = (h, v);
   d[data] = false;
 });
 
