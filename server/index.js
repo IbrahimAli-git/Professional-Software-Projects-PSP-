@@ -2,14 +2,15 @@ const express = require("express")
 const app = express()
 const http = require("http")
 const cors = require("cors")
-const {Server} = require("socket.io")
+const { Server } = require("socket.io")
 app.use(cors({ origin: "*" }))
+const players = [0, 0, 0, 0]
 
 const server = http.createServer(app)
 
-const io = new Server (server, {
+const io = new Server(server, {
     cors: {
-       // origin: "http://10.72.196.155:3000",
+        // origin: "http://10.72.196.155:3000",
         origin: "*",
         methods: ["GET", "POST"]
     }
@@ -17,14 +18,37 @@ const io = new Server (server, {
 
 io.on("connection", (socket) => {
     let id = socket.id;
+    let playernum=0;
+    
+
     console.log("User connected: " + id)
+    
+    for (var i  = 0; i < 4; i++) {
+        playernum++
+        if (players[i] == 0) {
+            players[i] = id;
+            break;
+        }
+    }
+    socket.emit("receive_index", playernum)
+    console.log(players)
+
+
+    socket.on("send_move", (data) => {
+        socket.broadcast.emit("receive_move", data)
+    });
 
     socket.on("disconnect", (socket) => {
         console.log("User disconnected: " + id)
+        for (var i  = 0; i < 4; i++) {
+            if (players[i] == id) {
+                players[i] = 0;
+                break;
+            }
+        }
+        console.log(players)
     })
-    socket.on("send_move",(data)=>{
-        socket.broadcast.emit("receive_move", data)
-    });
+
 })
 
 server.listen(8080, "0.0.0.0", () => {
