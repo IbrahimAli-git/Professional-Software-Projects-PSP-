@@ -12,14 +12,25 @@
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <title>MTa Pacman</title>
+    <title>Pac Man</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <div class = "GameBox" id = "box">
-      <div class = "character" id = "characterid"></div>
+    <div id="root"></div> 
+
+    <header>
+        <h6 class="title">Pac Man - Activity</h6>
+        <img src="./mta-logo.png" class="logo"/>
+    </header>
+
+    <div class="main">
+      <div class = "GameBox" id = "box">
+        <div class = "character" id = "characterid"></div>
+      </div>
     </div>
-    <script src = "/client/src/App.js" ></script>
+
+    <script src = "/client/my-app/src/App.js" ></script>
   </body>
+  
+  <!--<footer></footer>-->
 </html>

@@ -40,7 +40,7 @@ setInterval(function () {
        hor = h;
       return h },
     top: function (i, v) {
-      var v = newh(v, 38, 40);
+      var v = newv(v, 38, 40);
        //socket.emit("send_move", v) 
        vert = v;
       return v  }   
