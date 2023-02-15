@@ -32,20 +32,21 @@ header {
   height: 90px;
 }
 
-.title {
+header .title {
+  position: absolute;
   font-size: 30px;
-  margin-left: 25px;
+  margin-left: 2.2%;
   margin-top: 0px;
-  padding-top: 30px;
+  padding-top: 2%;
   display: inline-block;
   vertical-align: top;
 }
 
-.logo {
-  width: 100px; 
-  display: inline-block;
-  padding-top: 20px;
-  padding-left: 850px;
+header .logo {
+  width: 100px;
+  position: absolute;
+  left: 88%;
+  padding-top: 1.5%;
 }
 
 body {
