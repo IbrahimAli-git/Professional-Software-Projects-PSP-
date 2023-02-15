@@ -1,4 +1,4 @@
-### Professional Software Projects
+# Professional Software Projects
 
 ## Key Topics:
 
@@ -29,6 +29,6 @@ Ibrahim Ali - c0046944@hallam.shu.ac.uk
 
 ## References
 
-Socket.io + ReactJS Tutorial:  https://youtu.be/djMy4QsPWiI  
-Create React App:              https://github.com/facebook/create-react-app/blob/main/packages/cra-template/template/README.md  
-MTa Website:                   https://www.experientiallearning.org/online/
+Socket.io + ReactJS Tutorial: https://youtu.be/djMy4QsPWiI  
+Create React App: https://github.com/facebook/create-react-app/blob/main/packages/cra-template/template/README.md  
+MTa Website: https://www.experientiallearning.org/online/
