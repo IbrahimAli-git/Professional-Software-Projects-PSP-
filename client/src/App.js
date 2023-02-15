@@ -15,10 +15,10 @@ var pane = $('#box'),
   currentv = 200,
   currenth = 300,
   playernum = 0;
-  socket.on("receive_index", (num) => {
-    playernum = num;
-    console.log("playernum: " + playernum)
-  });
+socket.on("receive_index", (num) => {
+  playernum = num;
+  console.log("playernum: " + playernum)
+});
 
 function newh(v, a, b) {
   var n = parseInt(v, 10) - (d[a] ? x : 0) + (d[b] ? x : 0);
@@ -34,20 +34,34 @@ $(window).keydown(function (e) {
   console.log("event: " + e.which)
   console.log("playernum: " + playernum)
 
-  if (e.which === 37 && playernum === 1){
-     d[e.which] = true; 
-   }
-   if (e.which === 38 && playernum === 2){
-    d[e.which] = true; 
+  if ((e.which === 37 || e.which === 65) && playernum === 1) {
+    d[37] = true;
   }
-  if (e.which === 39 && playernum === 3){
-    d[e.which] = true; 
+  if ((e.which === 38 || e.which === 87) && playernum === 2) {
+    d[38] = true;
   }
-  if (e.which === 40 && playernum === 4){
-    d[e.which] = true; 
+  if ((e.which === 39 || e.which === 68) && playernum === 3) {
+    d[39] = true;
   }
-  });
-$(window).keyup(function (e) { d[e.which] = false; });
+  if ((e.which === 40 || e.which === 83) && playernum === 4) {
+    d[40] = true;
+  }
+});
+
+$(window).keyup(function (e) {
+  if (e.which === 37 || e.which === 65) {
+    d[37] = false;
+  }
+  if (e.which === 38 || e.which === 87) {
+    d[38] = false;
+  }
+  if (e.which === 39 || e.which === 68) {
+    d[39] = false;
+  }
+  if (e.which === 40 || e.which === 83) {
+    d[40] = false;
+  }
+});
 
 setInterval(function () {
   var vert;
@@ -69,7 +83,7 @@ setInterval(function () {
     currentv = vert;
     currenth = hor;
   }
-  
+
 }, 20);
 socket.on("receive_move", (data) => {
   var v = data.v;
