@@ -15,9 +15,14 @@ const io = new Server(server, {
     }
 })
 
+var currentv = 200;
+var currenth = 300;
+
 io.on("connection", (socket) => {
     let id = socket.id;
     let playernum=0;
+
+    socket.emit("receive_move", { v: currentv, h: currenth })
 
     console.log("User connected: " + id)
     
@@ -40,6 +45,8 @@ io.on("connection", (socket) => {
     console.log(players)
 
     socket.on("send_move", (data) => {
+        currentv = data.v;
+        currenth = data.h;
         socket.broadcast.emit("receive_move", data)
     });
 
