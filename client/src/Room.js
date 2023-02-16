@@ -7,18 +7,25 @@ function Room() {
     var App= require ("./App");
     const [username, setUsername] = useState("");
     const [room, setRoom] = useState("");
+    const [showApp, setShowApp] = useState(false);
     const joinRoom = () => {
         if (username !== "" && room !== ""){
         socket.emit("join_room",room);
+        setShowApp(true);
         }
     }
     return (
-        <div class="main">
-            <h3>Join a Room</h3>
-            <input type="text" placeholder="Name..." onChange={(event) => {setUsername(event.target.value)}}/>
-            <input type="text" placeholder="Room CODE" onChange={(event) => {setRoom(event.target.value)}}/>
-            <button onClick={joinRoom}>Submit</button>
-            <App socket={socket} username={username} room={room}/>
+        <div class="Room">
+            {!showApp ?(
+                <div class="JoinRoom">
+                    <h3>Join a Room</h3>
+                    <input type="text" placeholder="Name..." onChange={(event) => {setUsername(event.target.value)}}/>
+                    <input type="text" placeholder="Room CODE" onChange={(event) => {setRoom(event.target.value)}}/>
+                    <button onClick={joinRoom}>Submit</button>
+                </div>
+            ) : (
+                <App socket={socket} username={username} room={room}/>
+            )}
         </div>
     )
 }
