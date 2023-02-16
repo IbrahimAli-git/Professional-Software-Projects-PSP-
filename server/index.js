@@ -22,6 +22,11 @@ io.on("connection", (socket) => {
 
     console.log("User connected: " + id)
     
+    socket.on("join_room", (data)=> {
+        socket.join(data);
+        console.log("User " + id + "joined room: " + data)
+    })
+
     if (players[0] !== 0 && players[1] !== 0 && players[2] !== 0 && players[3] !== 0){
         alert("Room is full")
     }
@@ -39,7 +44,7 @@ io.on("connection", (socket) => {
 
 
     socket.on("send_move", (data) => {
-        socket.broadcast.emit("receive_move", data)
+        io.to(data.r).emit("receive_move", data);
     });
 
     socket.on("disconnect", (socket) => {
