@@ -19,7 +19,6 @@ io.on("connection", (socket) => {
     let id = socket.id;
     let playernum=0;
 
-
     console.log("User connected: " + id)
     
     if (players[0] !== 0 && players[1] !== 0 && players[2] !== 0 && players[3] !== 0){
@@ -29,6 +28,9 @@ io.on("connection", (socket) => {
         for (var i  = 0; i < 4; i++) {
             playernum++
             if (players[i] == 0) {
+                if (players[0] == 0 && players[1] == 0 && players[2] == 0 && players[3] == 0){
+                    socket.emit("new_host");
+                }
                 players[i] = id;
                 break;
             }
@@ -37,9 +39,12 @@ io.on("connection", (socket) => {
     socket.emit("receive_index", playernum)
     console.log(players)
 
-
     socket.on("send_move", (data) => {
         socket.broadcast.emit("receive_move", data)
+    });
+
+    socket.on("send_input", (data) => {
+        socket.broadcast.emit("receive_input", data)
     });
 
     socket.on("disconnect", (socket) => {
@@ -47,6 +52,7 @@ io.on("connection", (socket) => {
         for (var i  = 0; i < 4; i++) {
             if (players[i] == id) {
                 players[i] = 0;
+                io.to (players[i]).emit('new_host')
                 break;
             }
         }
