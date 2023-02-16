@@ -6,6 +6,12 @@ const socket = io.connect("http://10.72.196.155:8080")
 function App() {
 }
 
+var score = 0,
+  dot = $('#dot');
+  dotw = box.width();
+  dotv = 200;
+  doth = 200;
+  
 var pane = $('#box'), //the game box
   box = $('#characterid'), //the character
   boxw = box.width(),
@@ -72,7 +78,7 @@ socket.on("receive_move", (data) => { //recieves new position from the server
   });
   currentv = v;
   currenth = h;
-  if ((currenth + (boxw * 0.5) < doth + (dotw * 0.5)) && (currenth - (boxw * 0.5) > doth - (dotw * 0.5)) && (currentv + (boxw * 0.5)< dotv + (dotw * 0.5)) && (currentv - (boxw * 0.5) > dotv - (dotw * 0.5))){
+  if ((currenth + (boxw * 0.5) < doth + (dotw * 0.5)) && (currenth + (boxw * 0.5) > doth - (dotw * 0.5)) && (currentv + (boxw * 0.5)< dotv + (dotw * 0.5)) && (currentv + (boxw * 0.5) > dotv - (dotw * 0.5))){
     newdot();
   }
   d[data] = false;
@@ -128,11 +134,6 @@ socket.on("new_host", () => { //server has designated a new 'host'
   console.log ("host"+host);
 });
   
-var score = 0,
-  dot = $('#dot');
-  dotw = box.width();
-  dotv = 200;
-  doth = 200;
 
 function newdot (){
   score ++;
