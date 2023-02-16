@@ -13,6 +13,7 @@
     "socket.io-client": "^4.6.0",
     "web-vitals": "^2.1.4"
   },
+  "proxy": "http://10.72.196.155:8080/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

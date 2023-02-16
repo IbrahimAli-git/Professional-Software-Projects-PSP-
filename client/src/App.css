@@ -13,17 +13,6 @@
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
 .App-link {
   color: #61dafb;
 }
@@ -36,22 +25,121 @@
     transform: rotate(360deg);
   }
 }
-*/ 
+*/
+
+header {
+  background-color: #222222;
+  height: 88px;
+  margin-bottom: auto;
+}
+
+header .title {
+  position: absolute;
+  font-size: 30px;
+  margin-left: 2.2%;
+  margin-top: 0px;
+  padding-top: 2%;
+  display: inline-block;
+  vertical-align: top;
+}
+
+header .logo {
+  width: 100px;
+  position: absolute;
+  left: 88%;
+  padding-top: 1.5%;
+}
 
 body {
   font-family: sans-serif;
-  text-shadow: 1px 1px #999;
-  padding: 25px;
-  background-color: black;
+  background-color: #303030;
   color: white;
-  font-size: 25px;
+  font-size: 20px;
+  margin: 0px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
+
+#overlay {
+  position: fixed;
+  display: none;
+  width: 85%;
+  height: 85%;
+  top: 7%;
+  left: 7%;
+  right: 7%;
+  bottom: 7%;
+  background-color: grey;
+  z-index: 2;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+#overlaybkg {
+  position: fixed;
+  display: none;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 2;
+  cursor: pointer;
+}
+
+#text{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: white;
+  transform: translate(-70%,-50%);
+  -ms-transform: translate(-50%,-50%);
+}
+
+.briefTitle {
+  font-size: 30px;
+}
+
+.briefDescription {
+  font-size: 20px;
+}
+
+/* br {
+  padding: 43px;
+}*/
+
+footer {
+  background-color: black;
+  color: black;
+  padding: 0.5%;
+  margin-top: auto;
+}
+
+footer .briefbtn {
+  background-color: #A6A3A3;
+  color: black;
+  font-weight: bold;
+  position: relative;
+  padding: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border-radius: 10px;
+  left: 91%;
+}
+
 .GameBox {
-  width: 500px;
-  height: 500px;
+  width: 800px;
+  height: 400px;
   background-color: white;
   color: black;
   position: relative;
+  margin: auto;
+  border: 10px solid black;
+  border-radius: 10px;
+  align-content: center;
 }
 
 .character{
@@ -61,6 +149,6 @@ body {
   background-color: blue;
   
   position: absolute;
-  left: 500px;
+  left: 300px;
   top: 200px;
 }
