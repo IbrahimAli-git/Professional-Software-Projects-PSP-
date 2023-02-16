@@ -12,7 +12,7 @@ var pane = $('#box'), //the game box
   wh = pane.width() - box.width(), //calculates the max distance character can go horizontally
   wv = pane.height() - box.height(), //calculates the max distance character can go vertically
   d = {}, //Stores key presses, the key for the current direction is set to 'true'
-  x = 10, //Movement speed
+  x = 3, //Movement speed
   currentv = 200,
   currenth = 300,
   playernum = 0,
@@ -50,18 +50,24 @@ setInterval(function () {
         return v
       }
     });
-    
+
     if (currentv !== vert || currenth !== hor) {
       socket.emit("send_move", { v: vert, h: hor })
       currentv = vert;
       currenth = hor;
-    }  
+    }
   }
 }, 20);
 
-socket.on("receive_move", (data) => { //recieves new position from the server
-  var v = data.v;
-  var h = data.h;
+var score = 0,
+  dot = $('#dot'),
+  dotw = box.width(),
+  dotv = 200,
+  doth = 200;
+  
+  socket.on("receive_move", (data) => { //recieves new position from the server
+    var v = data.v;
+    var h = data.h;
 
   console.log("received")
   d[data] = true;
@@ -72,7 +78,7 @@ socket.on("receive_move", (data) => { //recieves new position from the server
   });
   currentv = v;
   currenth = h;
-  if ((currenth + boxw < doth + dotw) && (currenth - boxw > doth - dotw) && (currentv + boxw < dotv + dotw) && (currentv - boxw > dotv - dotw)){
+  if ((currenth + boxw < doth + dotw) && (currenth - boxw > doth - dotw) && (currentv + boxw < dotv + dotw) && (currentv - boxw > dotv - dotw)) {
     newdot();
   }
   d[data] = false;
@@ -83,7 +89,7 @@ $(window).keydown(function (e) { //when a key is pressed, it checks whether that
   console.log("playernum: " + playernum)
 
   if ((e.which === 37 || e.which === 65) && playernum === 1) {
-    if (37 != lastinput){
+    if (37 != lastinput) {
       d[lastinput] = false;
       d[37] = true;
       lastinput = 37;
@@ -91,7 +97,7 @@ $(window).keydown(function (e) { //when a key is pressed, it checks whether that
     }
   }
   if ((e.which === 38 || e.which === 87) && playernum === 2) {
-    if (38 != lastinput){
+    if (38 != lastinput) {
       d[lastinput] = false;
       d[38] = true;
       lastinput = 38;
@@ -99,7 +105,7 @@ $(window).keydown(function (e) { //when a key is pressed, it checks whether that
     }
   }
   if ((e.which === 39 || e.which === 68) && playernum === 3) {
-    if (39 != lastinput){
+    if (39 != lastinput) {
       d[lastinput] = false;
       d[39] = true;
       lastinput = 39;
@@ -107,7 +113,7 @@ $(window).keydown(function (e) { //when a key is pressed, it checks whether that
     }
   }
   if ((e.which === 40 || e.which === 83) && playernum === 4) {
-    if (40 != lastinput){
+    if (40 != lastinput) {
       d[lastinput] = false;
       d[40] = true;
       lastinput = 40;
@@ -125,17 +131,12 @@ socket.on("receive_input", (data) => { //recieves key press from server
 
 socket.on("new_host", () => { //server has designated a new 'host'
   host = true;
-  console.log ("host"+host);
+  console.log("host" + host);
 });
-  
-var score = 0,
-  dot = $('#dot');
-  dotw = box.width();
-  dotv = 200;
-  doth = 200;
 
-function newdot (){
-  score ++;
+
+function newdot() {
+  score++;
   document.body.innerHTML.replace('Score: 0', 'Score: ' + score);
   dot.css({
     left: Math.random(pane.width()),
