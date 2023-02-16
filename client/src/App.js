@@ -7,11 +7,11 @@ function App() {
 }
 
 var score = 0,
-  dot = $('#dot');
-  dotw = box.width();
-  dotv = 200;
+  dot = $('#dot'),
+  dotw = dot.width(),
+  dotv = 200,
   doth = 200;
-  
+
 var pane = $('#box'), //the game box
   box = $('#characterid'), //the character
   boxw = box.width(),
@@ -40,6 +40,15 @@ function newv(v, a, b) { //calculates new horizontal postion, ensures it's withi
   return n < 0 ? 0 : n > wv ? wv : n;
 }
 
+function newdot() {
+  score++;
+  console.log("score" + score);
+  dot.css({
+    left: Math.random(pane.width()),
+    top: Math.random(pane.height())
+  });
+}
+
 setInterval(function () {
   if (host == true) {
     var vert;
@@ -57,6 +66,11 @@ setInterval(function () {
       }
     });
 
+    console.log(currenth, currentv, boxw, doth, dotv, dotw);
+    if ((currenth + (boxw/2) >= doth + dotw) && (currenth + (boxw/2) <= doth - dotw) && (currentv + (boxw/2) >= dotv + dotw) && (currentv + (boxw/2) <= dotv - dotw)){
+      newdot();
+    }
+
     if (currentv !== vert || currenth !== hor) {
       socket.emit("send_move", { v: vert, h: hor })
       currentv = vert;
@@ -64,12 +78,6 @@ setInterval(function () {
     }
   }
 }, 20);
-
-var score = 0,
-  dot = $('#dot'),
-  dotw = box.width(),
-  dotv = 200,
-  doth = 200;
   
   socket.on("receive_move", (data) => { //recieves new position from the server
     var v = data.v;
@@ -84,7 +92,7 @@ var score = 0,
   });
   currentv = v;
   currenth = h;
-  if ((currenth + boxw < doth + dotw) && (currenth - boxw > doth - dotw) && (currentv + boxw < dotv + dotw) && (currentv - boxw > dotv - dotw)){
+  if ((currenth + (boxw/2) <= doth + dotw) && (currenth + (boxw/2) >= doth - dotw) && (currentv + (boxw/2) <= dotv + dotw) && (currentv + (boxw/2) >= dotv - dotw)){
     newdot();
   }
   d[data] = false;
@@ -139,19 +147,5 @@ socket.on("new_host", () => { //server has designated a new 'host'
   host = true;
   console.log("host" + host);
 });
-  
-var score = 0,
-  dot = $('#dot');
-  dotw = box.width();
-  dotv = 200;
-  doth = 200;
 
-function newdot() {
-  score++;
-  document.body.innerHTML.replace('Score: 0', 'Score: ' + score);
-  dot.css({
-    left: Math.random(pane.width()),
-    top: Math.random(pane.height())
-  });
-}
 export default App;
