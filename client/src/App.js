@@ -221,8 +221,8 @@ socket.on("receive_input", (data) => {
 });
 
 socket.on("new_host", () => {
-  console.log ("host"+host);
   host = true;
+  console.log ("host"+host);
 });
   
 export default App;

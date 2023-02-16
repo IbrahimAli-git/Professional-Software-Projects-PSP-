@@ -52,10 +52,17 @@ io.on("connection", (socket) => {
         for (var i  = 0; i < 4; i++) {
             if (players[i] == id) {
                 players[i] = 0;
-                io.to (players[i]).emit('new_host')
+                for (var i in players){
+                    if (i !== 0){
+                        io.to (players[i]).emit('new_host')
+
+                    }
+                }
                 break;
             }
         }
+
+        
         console.log(players)
     })
 
