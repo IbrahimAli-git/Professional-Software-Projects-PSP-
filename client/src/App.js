@@ -11,7 +11,7 @@ var pane = $('#box'),
   wh = pane.width() - box.width(),
   wv = pane.height() - box.height(),
   d = {},
-  x = 10,
+  x = 5,
   currentv = 200,
   currenth = 300,
   playernum = 0,
@@ -110,6 +110,7 @@ $(window).keydown(function (e) {
       socket.emit("send_input", (40))
     }
   }
+  console.log(lastinput);
 });
 
 socket.on("receive_input", (data) => {
