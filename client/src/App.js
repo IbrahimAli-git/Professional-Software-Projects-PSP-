@@ -8,6 +8,7 @@ function App() {
 
 var pane = $('#box'), //the game box
   box = $('#characterid'), //the character
+  boxw = box.width(),
   wh = pane.width() - box.width(), //calculates the max distance character can go horizontally
   wv = pane.height() - box.height(), //calculates the max distance character can go vertically
   d = {}, //Stores key presses, the key for the current direction is set to 'true'
@@ -71,6 +72,9 @@ socket.on("receive_move", (data) => { //recieves new position from the server
   });
   currentv = v;
   currenth = h;
+  if ((currenth + boxw < doth + dotw) && (currenth - boxw > doth - dotw) && (currentv + boxw < dotv + dotw) && (currentv - boxw > dotv - dotw)){
+    newdot();
+  }
   d[data] = false;
 });
 
@@ -124,4 +128,18 @@ socket.on("new_host", () => { //server has designated a new 'host'
   console.log ("host"+host);
 });
   
+var score = 0,
+  dot = $('#dot');
+  dotw = box.width();
+  dotv = 200;
+  doth = 200;
+
+function newdot (){
+  score ++;
+  document.body.innerHTML.replace('Score: 0', 'Score: ' + score);
+  dot.css({
+    left: Math.random(pane.width()),
+    top: Math.random(pane.height())
+  });
+}
 export default App;
