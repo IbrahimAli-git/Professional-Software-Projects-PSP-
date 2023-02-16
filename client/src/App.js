@@ -72,7 +72,7 @@ socket.on("receive_move", (data) => { //recieves new position from the server
   });
   currentv = v;
   currenth = h;
-  if ((currenth + boxw < doth + dotw) && (currenth - boxw > doth - dotw) && (currentv + boxw < dotv + dotw) && (currentv - boxw > dotv - dotw)){
+  if ((currenth + (boxw * 0.5) < doth + (dotw * 0.5)) && (currenth - (boxw * 0.5) > doth - (dotw * 0.5)) && (currentv + (boxw * 0.5)< dotv + (dotw * 0.5)) && (currentv - (boxw * 0.5) > dotv - (dotw * 0.5))){
     newdot();
   }
   d[data] = false;
