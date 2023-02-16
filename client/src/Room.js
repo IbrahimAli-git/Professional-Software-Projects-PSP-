@@ -17,7 +17,7 @@ function Room() {
     return (
         <div class="Room">
             {!showApp ?(
-                <div class="JoinRoom">
+                <div className="JoinRoom">
                     <h3>Join a Room</h3>
                     <input type="text" placeholder="Name..." onChange={(event) => {setUsername(event.target.value)}}/>
                     <input type="text" placeholder="Room CODE" onChange={(event) => {setRoom(event.target.value)}}/>

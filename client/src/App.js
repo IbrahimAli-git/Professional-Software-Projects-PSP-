@@ -96,8 +96,8 @@ function App({socket, username, room}) {
     d[data] = false;
   });
   return (
-    <div class = "GameBox" id = "box">
-        <div class = "character" id = "characterid"></div>
+    <div className = "GameBox" id = "box">
+        <div className = "character" id = "characterid"></div>
     </div>
   )
 }
