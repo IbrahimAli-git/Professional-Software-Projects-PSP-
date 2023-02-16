@@ -11,6 +11,7 @@ function App({socket, username, room}) {
     currentv = 200,
     currenth = 300,
     playernum = 0;
+
   socket.on("receive_index", (num) => {
     playernum = num;
     console.log("playernum: " + playernum)
@@ -96,8 +97,10 @@ function App({socket, username, room}) {
     d[data] = false;
   });
   return (
-    <div className = "GameBox" id = "box">
+    <div className="Main">
+      <div className = "GameBox" id = "box">
         <div className = "character" id = "characterid"></div>
+      </div>
     </div>
   )
 }
