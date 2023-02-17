@@ -3,15 +3,15 @@ const app = express()
 const http = require("http")
 const cors = require("cors")
 const { Server } = require("socket.io")
-app.use(cors())
+app.use(cors({origin: "*"}))
 const players = [0, 0, 0, 0]
 
 const server = http.createServer(app)
 
 const io = new Server(server, {
     cors: {
-        // origin: "*",
-        origin: "http://localhost:3000",
+        origin: "*",
+        // origin: "http://localhost:3000",
         methods: ["GET", "POST"]
     }
 })
@@ -72,6 +72,6 @@ io.on("connection", (socket) => {
     })
 })
 
-server.listen(3001, "0.0.0.0", () => {
+server.listen(8080, "0.0.0.0", () => {
     console.log("Server running ... ")
 })
