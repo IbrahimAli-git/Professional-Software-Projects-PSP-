@@ -1,7 +1,7 @@
 import './App.css';
 import $ from 'jquery'
 import io from "socket.io-client"
-const socket = io.connect("http://10.72.196.155:8080")
+const socket = io.connect("http://localhost:8080")
 
 function App() {
 }
