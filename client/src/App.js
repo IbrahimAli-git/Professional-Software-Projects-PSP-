@@ -1,7 +1,7 @@
 import './App.css';
 import $ from 'jquery'
 import io from "socket.io-client"
-const socket = io.connect("https://professional-software-projects-psp.vercel.app/")
+const socket = io.connect("https://server-eight-dun.vercel.app/")
 
 function App() {
 }
