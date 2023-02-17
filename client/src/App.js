@@ -1,7 +1,10 @@
 import './App.css';
 import $ from 'jquery'
 import io from "socket.io-client"
-const socket = io.connect("https://server-eight-dun.vercel.app/", {transports: ['websocket']})
+const socket = io.connect("https://server-eight-dun.vercel.app/", {
+  forceNew: true,
+  transports: ["polling"],
+})
 
 function App() {
 }
