@@ -13,7 +13,7 @@
     "socket.io-client": "^4.6.0",
     "web-vitals": "^2.1.4"
   },
-  "proxy": "http://localhost:8080",
+  "proxy": "https://professional-software-projects-psp.vercel.app/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
