@@ -18,19 +18,36 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
     let id = socket.id;
     let playernum=0;
+    let extramoves=0
 
 
     console.log("User connected: " + id)
     
-    if (players[0] !== 0 && players[1] !== 0 && players[2] !== 0 && players[3] !== 0){
-        alert("Room is full")
+    if (players[0] !== 0 && players[1] !== 0 && players[2] !== 0 && players[3] !== 0 && players[0] !== players[1] && players[2] !== players[3]){
+        console.log("Room is full")
     }
     else{
         for (var i  = 0; i < 4; i++) {
             playernum++
-            if (players[i] == 0) {
-                players[i] = id;
+            if (playernum==4){
+                players[1]=id;
                 break;
+            }
+            if (playernum==3){
+                players[3]=id;
+                break;
+            }
+            if (playernum==2){
+                players[2]=id;
+                players[3]=id;
+                break;
+            }
+            if (playernum==1) {
+                for (var i  = 0; i < 4; i++) {
+                    if (players[i] == 0) {
+                        players[i] = id;
+                    }
+                }
             }
         }
     }
@@ -47,7 +64,6 @@ io.on("connection", (socket) => {
         for (var i  = 0; i < 4; i++) {
             if (players[i] == id) {
                 players[i] = 0;
-                break;
             }
         }
         console.log(players)

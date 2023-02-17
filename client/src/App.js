@@ -14,11 +14,21 @@ var pane = $('#box'),
   x = 10,
   currentv = 200,
   currenth = 300,
-  playernum = 0;
+  playernum = 0,
+  extramoves = [0,0,0];
 socket.on("receive_index", (num) => {
   playernum = num;
   console.log("playernum: " + playernum)
 });
+
+socket.on("extra_movement", (data) => {
+  for (var i  = 0; i < 3; i++) {
+    if (data[i] === i+1) {
+        extramoves[i] = data[i];
+    }
+}
+
+})
 
 function newh(v, a, b) {
   var n = parseInt(v, 10) - (d[a] ? x : 0) + (d[b] ? x : 0);
@@ -34,16 +44,16 @@ $(window).keydown(function (e) {
   console.log("event: " + e.which)
   console.log("playernum: " + playernum)
 
-  if ((e.which === 37 || e.which === 65) && playernum === 1) {
+  if ((e.which === 37 || e.which === 65) && (playernum === 1 ||  extramoves.includes(1))) {
     d[37] = true;
   }
-  if ((e.which === 38 || e.which === 87) && playernum === 2) {
+  if ((e.which === 38 || e.which === 87) && (playernum === 2 ||  extramoves.includes(2))) {
     d[38] = true;
   }
-  if ((e.which === 39 || e.which === 68) && playernum === 3) {
+  if ((e.which === 39 || e.which === 68) && (playernum === 3 ||  extramoves.includes(3))) {
     d[39] = true;
   }
-  if ((e.which === 40 || e.which === 83) && playernum === 4) {
+  if ((e.which === 40 || e.which === 83) && (playernum === 4 ||  extramoves.includes(4))) {
     d[40] = true;
   }
 });
