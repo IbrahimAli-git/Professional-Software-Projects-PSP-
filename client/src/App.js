@@ -7,7 +7,7 @@ function App() {
 }
 
 var score = 0,
-  dot = $('#dot'),
+  dot = $('#dot');
 
 var pane = $('#box'), //the game box
   box = $('#characterid'), //the character
