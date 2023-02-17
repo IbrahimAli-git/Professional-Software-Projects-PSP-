@@ -8,13 +8,9 @@ function App() {
 
 var score = 0,
   dot = $('#dot'),
-  dotw = dot.width(),
-  dotv = 200,
-  doth = 200;
 
 var pane = $('#box'), //the game box
   box = $('#characterid'), //the character
-  boxw = box.width(),
   wh = pane.width() - boxw(), //calculates the max distance character can go horizontally
   wv = pane.height() - boxw(), //calculates the max distance character can go vertically
   d = {}, //Stores key presses, the key for the current direction is set to 'true'
@@ -59,13 +55,11 @@ setInterval(function () {
 
     if (currentv !== vert || currenth !== hor) {
       socket.emit("send_move", { v: vert, h: hor })
-      //fix
-      if ((currenth + (boxw/2) <= doth + dotw) && (currenth + (boxw/2) >= doth - dotw) && (currentv + (boxw/2) <= dotv + dotw) && (currentv + (boxw/2) >= dotv - dotw)){
-        newdot();
-      }
-      //this
       currentv = vert;
       currenth = hor;
+      if (celementsOverlap(box, dot)){
+        newdot();
+      }
     }
   }
 }, 20);
@@ -81,11 +75,11 @@ setInterval(function () {
     left: h,
     top: v
   });
-  if ((currenth + (boxw/2) >= doth + dotw) && (currenth + (boxw/2) <= doth - dotw) && (currentv + (boxw/2) >= dotv + dotw) && (currentv + (boxw/2) <= dotv - dotw)){
-    newdot();
-  }
   currentv = v;
   currenth = h;
+  if (elementsOverlap(box, dot)){
+    newdot();
+  }
   d[data] = false;
 });
 
@@ -146,6 +140,18 @@ function newdot() {
     left: Math.random(pane.width()),
     top: Math.random(pane.height())
   });
+}
+
+function elementsOverlap(el1, el2) {
+  const domRect1 = el1.getBoundingClientRect();
+  const domRect2 = el2.getBoundingClientRect();
+
+  return !(
+    domRect1.top > domRect2.bottom ||
+    domRect1.right < domRect2.left ||
+    domRect1.bottom < domRect2.top ||
+    domRect1.left > domRect2.right
+  );
 }
 
 export default App;
