@@ -4,7 +4,8 @@ const http = require("http")
 const cors = require("cors")
 const { Server } = require("socket.io")
 app.use(cors({ origin: "*" }))
-const players = [0, 0, 0, 0]
+const rooms = []
+//const players = [0, 0, 0, 0]
 
 const server = http.createServer(app)
 
@@ -25,6 +26,11 @@ io.on("connection", (socket) => {
     socket.on("join_room", (data)=> {
         socket.join(data);
         console.log("User " + id + "joined room: " + data)
+        rooms.push(data)
+        rooms[rooms.indexOf(data)] = [0, 0, 0, 0]
+        for (var i = 0; i < rooms.length; i++) {
+            gfg[i] = [0, 0, 0, 0]
+        }
     })
 
     if (players[0] !== 0 && players[1] !== 0 && players[2] !== 0 && players[3] !== 0){
@@ -39,8 +45,10 @@ io.on("connection", (socket) => {
             }
         }
     }
-    socket.emit("receive_index", playernum)
-    console.log(players)
+    socket.on("send_index", () => {
+        socket.emit("receive_index", playernum)
+        console.log(players)
+    })
 
 
     socket.on("send_move", (data) => {

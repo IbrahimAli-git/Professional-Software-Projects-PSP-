@@ -1,7 +1,7 @@
 import './App.css';
 import $ from 'jquery'
 
-function App({socket, username, room}) {
+function App({socket, username, room, playernum}) {
   var pane = $('#box'),
     box = $('#characterid'),
     wh = pane.width() - box.width(),
@@ -9,19 +9,14 @@ function App({socket, username, room}) {
     d = {},
     x = 10,
     currentv = 200,
-    currenth = 300,
-    playernum = 0;
+    currenth = 300;
 
-  socket.on("receive_index", (num) => {
-    playernum = num;
-    console.log("playernum: " + playernum)
-  });
-  function newh(v, a, b) {
+  const newh = (v, a, b) => {
     var n = parseInt(v, 10) - (d[a] ? x : 0) + (d[b] ? x : 0);
     return n < 0 ? 0 : n > wh ? wh : n;
   }
   
-  function newv(v, a, b) {
+  const newv = (v, a, b) => {
     var n = parseInt(v, 10) - (d[a] ? x : 0) + (d[b] ? x : 0);
     return n < 0 ? 0 : n > wv ? wv : n;
   }
@@ -42,6 +37,7 @@ function App({socket, username, room}) {
     if ((e.which === 40 || e.which === 83) && playernum === 4) {
       d[40] = true;
     }
+    getMove();
   });
   
   $(window).keyup(function (e) {
@@ -81,7 +77,8 @@ function App({socket, username, room}) {
     }
   
   }, 20);
-  socket.on("receive_move", (data) => {
+  const getMove = () => {
+    socket.on("receive_move", (data) => {
     var v = data.v;
     var h = data.h;
   
@@ -95,7 +92,7 @@ function App({socket, username, room}) {
     currentv = v;
     currenth = h;
     d[data] = false;
-  });
+  })};
   return (
     <div className="Main">
       <div className = "GameBox" id = "box">
