@@ -164,14 +164,3 @@ footer .briefbtn {
   left: 300px;
   top: 200px;
 }
-
-.Dot{
-  height: 10px;
-  width: 10px;
-  border-radius: 50%;
-  background-color: red;
-
-  position: absolute;
-  left: 200px;
-  top: 200px;
-}

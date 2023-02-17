@@ -6,15 +6,8 @@ const socket = io.connect("http://10.72.196.155:8080")
 function App() {
 }
 
-var score = 0,
-  dot = $('#dot'),
-  dotw = dot.width(),
-  dotv = 200,
-  doth = 200;
-
 var pane = $('#box'), //the game box
   box = $('#characterid'), //the character
-  boxw = box.width(),
   wh = pane.width() - box.width(), //calculates the max distance character can go horizontally
   wv = pane.height() - box.height(), //calculates the max distance character can go vertically
   d = {}, //Stores key presses, the key for the current direction is set to 'true'
@@ -40,15 +33,6 @@ function newv(v, a, b) { //calculates new horizontal postion, ensures it's withi
   return n < 0 ? 0 : n > wv ? wv : n;
 }
 
-function newdot() {
-  score++;
-  console.log("score" + score);
-  dot.css({
-    left: Math.random(pane.width()),
-    top: Math.random(pane.height())
-  });
-}
-
 setInterval(function () {
   if (host == true) {
     var vert;
@@ -65,11 +49,6 @@ setInterval(function () {
         return v
       }
     });
-
-    console.log(currenth, currentv, boxw, doth, dotv, dotw);
-    if ((currenth + (boxw/2) >= doth + dotw) && (currenth + (boxw/2) <= doth - dotw) && (currentv + (boxw/2) >= dotv + dotw) && (currentv + (boxw/2) <= dotv - dotw)){
-      newdot();
-    }
 
     if (currentv !== vert || currenth !== hor) {
       socket.emit("send_move", { v: vert, h: hor })
@@ -92,9 +71,6 @@ setInterval(function () {
   });
   currentv = v;
   currenth = h;
-  if ((currenth + (boxw/2) <= doth + dotw) && (currenth + (boxw/2) >= doth - dotw) && (currentv + (boxw/2) <= dotv + dotw) && (currentv + (boxw/2) >= dotv - dotw)){
-    newdot();
-  }
   d[data] = false;
 });
 
