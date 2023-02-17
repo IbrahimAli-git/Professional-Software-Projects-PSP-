@@ -3,6 +3,7 @@ const app = express()
 const http = require("http")
 const cors = require("cors")
 const { Server } = require("socket.io")
+const PORT = process.env.PORT || 8080
 app.use(cors({ origin: "*" }))
 const players = [0, 0, 0, 0]
 
@@ -72,6 +73,6 @@ io.on("connection", (socket) => {
     })
 })
 
-server.listen(8080, "0.0.0.0", () => {
+server.listen(PORT, "0.0.0.0", () => {
     console.log("Server running ... ")
 })
