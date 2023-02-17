@@ -3,7 +3,7 @@ const app = express()
 const http = require("http")
 const cors = require("cors")
 const { Server } = require("socket.io")
-app.use(cors({origin: "*"}))
+app.use(cors({ origin: "*" }))
 const players = [0, 0, 0, 0]
 
 const server = http.createServer(app)
