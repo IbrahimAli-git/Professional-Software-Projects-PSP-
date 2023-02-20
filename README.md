@@ -15,7 +15,7 @@ In terms of software this has been detailed in the client’s specification. It 
 
 ## How to Install and Run the Project
 
-1. Open a new codespace with the 'parallelmovement' branch
+1. Open a new codespace with the 'main' branch
 2. Use 'cd client' to navigate to the client directory
 3. In the terminal run 'yarn install'
 4. Once install has finished run 'yarn start' 

@@ -2,6 +2,8 @@ import './App.css';
 import $ from 'jquery'
 import io from "socket.io-client"
 const socket = io.connect("https://10.72.189.111:8080")
+// connects clients with server using local ip address on port 8080
+// port 8080 used instead of 3000
 
 function App() {
 }
