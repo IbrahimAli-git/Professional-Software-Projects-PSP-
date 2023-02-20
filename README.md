@@ -16,9 +16,10 @@ In terms of software this has been detailed in the client’s specification. It 
 ## How to Install and Run the Project
 
 1. Open a new codespace with the 'main' branch
-2. Use 'cd client' to navigate to the client directory
-3. In the terminal run 'yarn install'
-4. Once install has finished run 'yarn start' 
+2. Use 'cd server' to navigate to the server directory
+3. In the terminal run 'npm install'
+4. Once install has finished run 'npm start' 
+5. Then do the same for the client directory
 
 ## Collaborators
 
