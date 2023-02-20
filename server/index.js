@@ -26,42 +26,42 @@ io.on("connection", (socket) => { // creates socket.io connection
     socket.emit("receive_move", { v: currentv, h: currenth }) // sends current vertical and horizontal to client
     console.log("User connected: " + id) 
     
-    if (players[0] !== 0 && players[1] !== 0 && players[2] !== 0 && players[3] !== 0){
+    if (players[0] !== 0 && players[1] !== 0 && players[2] !== 0 && players[3] !== 0){ // checks if room is full
         console.log("Room is full")
     }
     else{
         for (var i  = 0; i < 4; i++) {
             playernum++
             if (players[i] == 0) {
-                if (players[0] == 0 && players[1] == 0 && players[2] == 0 && players[3] == 0){
+                if (players[0] == 0 && players[1] == 0 && players[2] == 0 && players[3] == 0){ // assigns a host to the first client available
                     socket.emit("new_host");
                 }
-                players[i] = id;
+                players[i] = id; // stores each clients id in players array
                 break;
             }
         }
     }
-    socket.emit("receive_index", playernum)
+    socket.emit("receive_index", playernum) // sending player number to client, determines move direction
     console.log(players)
 
-    socket.on("send_move", (data) => { 
+    socket.on("send_move", (data) => { // receives position from client 
         currentv = data.v;
         currenth = data.h;
-        socket.broadcast.emit("receive_move", data)
+        socket.broadcast.emit("receive_move", data) // sends new position to other clients
     });
 
-    socket.on("send_input", (data) => {
+    socket.on("send_input", (data) => {  // sends key pressed to other clients
         socket.broadcast.emit("receive_input", data)
     });
 
-    socket.on("disconnect", (socket) => { // 
+    socket.on("disconnect", (socket) => { // disconnects client and removes them from players array 
         console.log("User disconnected: " + id)
         for (var i  = 0; i < 4; i++) {
             if (players[i] == id) {
                 players[i] = 0;
                 for (var i in players){
                     if (i !== 0){
-                        io.to (players[i]).emit('new_host')
+                        io.to (players[i]).emit('new_host') // assigns 
                     }
                 }
                 break;

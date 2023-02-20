@@ -1,8 +1,8 @@
 import './App.css';
 import $ from 'jquery'
 import io from "socket.io-client"
-const socket = io.connect("https://10.72.189.111:8080")
-// connects clients with server using local ip address on port 8080
+const socket = io.connect("http://10.72.197.107:8080")
+// connects clients with server using current local ip address on port 8080
 // port 8080 used instead of 3000
 
 function App() {
@@ -35,7 +35,7 @@ function newv(v, a, b) { //calculates new horizontal postion, ensures it's withi
   return n < 0 ? 0 : n > wv ? wv : n;
 }
 
-setInterval(function () {
+setInterval(function () { // updates and sends new position to server at a set interval
   if (host === true) {
     var vert;
     var hor;
@@ -58,7 +58,7 @@ setInterval(function () {
       currenth = hor;
     }
   }
-}, 20);
+}, 20); // interval 20ms
   
   socket.on("receive_move", (data) => { //recieves new position from the server
     var v = data.v;
