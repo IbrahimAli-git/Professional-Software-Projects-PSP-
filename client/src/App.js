@@ -1,7 +1,7 @@
 import './App.css';
 import $ from 'jquery'
 import io from "socket.io-client"
-const socket = io.connect("https://81bf-143-52-36-133.eu.ngrok.io")
+const socket = io.connect("http://10.72.197.107:8080")
 // connects clients with server using current local ip address on port 8080
 // port 8080 used instead of 3000
 
