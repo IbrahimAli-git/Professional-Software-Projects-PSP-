@@ -16,8 +16,56 @@ const io = new Server(server, {
     }
 })
 
-let  currentv = 200; // current vertical of sprite
-let  currenth = 300; // current horizontal of sprite
+let paneW = 800,
+paneV = 400, //the game box
+boxW = 20,
+boxV = 20, //the character
+wh = paneW - boxW, //calculates the max distance character can go horizontally
+wv = paneV - boxV, //calculates the max distance character can go vertically
+d = {}, //Stores key presses, the key for the current direction is set to 'true'
+x = 3, //Movement speed
+currentv = 200,
+currenth = 300,
+lastinput = 0;
+
+function newh(v, a, b) { //calculates new vertical postion, ensures it's within game bounds
+    var n = parseInt(v, 10) - (d[a] ? x : 0) + (d[b] ? x : 0);
+    return n < 0 ? 0 : n > wh ? wh : n;
+}
+
+function newv(v, a, b) { //calculates new horizontal postion, ensures it's within game bounds
+    var n = parseInt(v, 10) - (d[a] ? x : 0) + (d[b] ? x : 0);
+    return n < 0 ? 0 : n > wv ? wv : n;
+}
+
+setInterval(function () { // updates and sends new position to server at a set interval
+    var vert;
+    var hor;
+    box.css({
+    left: function (i, n) {
+        var h = newh(n, 37, 39);
+        hor = h;
+        return h
+    },
+    top: function (i, n) {
+        var v = newv(n, 38, 40);
+        vert = v;
+        return v
+    }
+    });
+
+    if (currentv !== vert || currenth !== hor) {
+    currentv = vert;
+    currenth = hor;
+    socket.emit("receive_move", { v: currentv, h: currenth })
+    }
+}, 20); // interval 20ms
+
+socket.on("send_input", (data) => { //recieves key press from server
+    d[lastinput] = false;
+    d[data] = true;
+    lastinput = data;
+});
 
 io.on("connection", (socket) => { // creates socket.io connection
     let id = socket.id; // id of current client
@@ -33,37 +81,38 @@ io.on("connection", (socket) => { // creates socket.io connection
         for (var i  = 0; i < 4; i++) {
             playernum++
             if (players[i] == 0) {
-                if (players[0] == 0 && players[1] == 0 && players[2] == 0 && players[3] == 0){ // assigns a host to the first client available
-                    socket.emit("new_host");
-                }
+                // if (players[0] == 0 && players[1] == 0 && players[2] == 0 && players[3] == 0){ // assigns a host to the first client available
+                //     socket.emit("new_host");
+                // }
                 players[i] = id; // stores each clients id in players array
                 break;
             }
         }
     }
+
     socket.emit("receive_index", playernum) // sending player number to client, determines move direction
     console.log(players)
 
-    socket.on("send_move", (data) => { // receives position from client 
-        currentv = data.v;
-        currenth = data.h;
-        socket.broadcast.emit("receive_move", data) // sends new position to other clients
-    });
+    // socket.on("send_move", (data) => { // receives position from client 
+    //     currentv = data.v;
+    //     currenth = data.h;
+    //     socket.broadcast.emit("receive_move", data) // sends new position to other clients
+    // });
 
-    socket.on("send_input", (data) => {  // sends key pressed to other clients
-        socket.broadcast.emit("receive_input", data)
-    });
+    // socket.on("send_input", (data) => {  // sends key pressed to other clients
+    //     socket.broadcast.emit("receive_input", data)
+    // });
 
     socket.on("disconnect", (socket) => { // disconnects client and removes them from players array 
         console.log("User disconnected: " + id)
         for (var i  = 0; i < 4; i++) {
             if (players[i] == id) {
                 players[i] = 0;
-                for (var i in players){
-                    if (i !== 0){
-                        io.to (players[i]).emit('new_host') // assigns 
-                    }
-                }
+                // for (var i in players){
+                //     if (i !== 0){
+                //         io.to (players[i]).emit('new_host') // assigns 
+                //     }
+                // }
                 break;
             }
         }
