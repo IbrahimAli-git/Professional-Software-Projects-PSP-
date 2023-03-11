@@ -111,6 +111,6 @@ io.on("connection", (socket) => { // creates socket.io connection
     }, 50); // interval 20msawwadawd
 })
 
-server.listen(8080, "0.0.0.0", () => { // server listens for connections on port 8080
+server.listen(3000, "0.0.0.0", () => { // server listens for connections on port 8080
     console.log("Server running ... ")
 })
