@@ -24,28 +24,79 @@ let paneW = 800,
     wv = paneV - boxV, //calculates the max distance character can go vertically
     d = {}, //Stores key presses, the key for the current direction is set to 'true'
     x = 3, //Movement speed
-    currentv = 200,
-    currenth = 300,
-    lastinput = 0;
+    currentv = 251,
+    currenth = 8,
+    lastinput = 0,
+
+    walls = [/*[250,300,400,500],[100,300,0,190]*/];
 
 function newh(v, a, b) { //calculates new vertical postion, ensures it's within game bounds
-    var n = parseInt(v, 10) - (d[a] ? x : 0) + (d[b] ? x : 0);
-    return n < 0 ? 0 : n > wh ? wh : n;
+    var newh = parseInt(v, 10) - (d[a] ? x : 0) + (d[b] ? x : 0);
+    if (newh < 0){
+        reset();
+        return 8;
+    }
+    else if (newh > wh){
+        reset();
+        return 8;
+    }
+    
+    if (!wallCheckH(newh)){
+        return newh;
+    }
+    else{
+        return currenth;
+    }
+}
+    
+function newv(v, a, b) { //calculates new horizontal postion, ensures it's within game bounds
+    var newv = parseInt(v, 10) - (d[a] ? x : 0) + (d[b] ? x : 0);
+    if (newv < 0){
+        reset();
+        return 251;
+    }
+    else if (newv > wv){
+        reset();
+        return 251;
+    }
+
+    if (!wallCheckV(newv)){
+        return newv;
+    }
+    else{
+        return currentv;
+    }
 }
 
-function newv(v, a, b) { //calculates new horizontal postion, ensures it's within game bounds
-    var n = parseInt(v, 10) - (d[a] ? x : 0) + (d[b] ? x : 0);
-    return n < 0 ? 0 : n > wv ? wv : n;
+function wallCheckH(x){
+    return walls.some(i => i[0] < currentv && currentv < i[1] && i[2] < x && x < i[3])
+}
+
+function wallCheckV(x){
+    return walls.some(i => i[0] < x && x < i[1] && i[2] < currenth && currenth < i[3])
+}
+
+function reset(){
+    currentv = 10;
+    currenth = 10;
+    box.css({
+    left: function (i,n) {
+        return 8
+    },
+    top: function (i,n) {
+        return 251
+    }
+    })
 }
 
 io.on("connection", (socket) => { // creates socket.io connection
     let id = socket.id; // id of current client
     let playernum = 0; // assigns a no to each client
-    
+
     socket.emit("receive_move", { v: currentv, h: currenth }) // sends current vertical and horizontal to client
     console.log("User connected: " + id)
 
-    
+
     if (players[0] !== 0 && players[1] !== 0 && players[2] !== 0 && players[3] !== 0) { // checks if room is full
         console.log("Room is full")
     }

@@ -147,99 +147,99 @@ var pane = $('#box'), //the game box
     currentv = 10,
     currenth = 10,
     playernum = 0,
-    lastinput = 0,
-    host = true, //if host = true, then that client is the one doing the movement
+    lastinput = 0;
+    // host = true, //if host = true, then that client is the one doing the movement
 
-    walls = [/*[250,300,400,500],[100,300,0,190]*/];
+    // walls = [/*[250,300,400,500],[100,300,0,190]*/];
 
 // socket.on("receive_index", (num) => { //every client that connects recieves a player number from 0-4 (0 if there are already 4 players)
 //   playernum = num;
 //   console.log("playernum: " + playernum)
 // });
 
-function newh(v, a, b) { //calculates new vertical postion, ensures it's within game bounds
-  var newh = parseInt(v, 10) - (d[a] ? x : 0) + (d[b] ? x : 0);
-  if (newh < 0){
-    reset();
-    return 10;
-  }
-  else if (newh > wh){
-    reset();
-    return 10;
-  }
+// function newh(v, a, b) { //calculates new vertical postion, ensures it's within game bounds
+//   var newh = parseInt(v, 10) - (d[a] ? x : 0) + (d[b] ? x : 0);
+//   if (newh < 0){
+//     reset();
+//     return 10;
+//   }
+//   else if (newh > wh){
+//     reset();
+//     return 10;
+//   }
   
-  if (!wallCheckH(newh)){
-    return newh;
-  }
-  else{
-    return currenth;
-  }
-}
+//   if (!wallCheckH(newh)){
+//     return newh;
+//   }
+//   else{
+//     return currenth;
+//   }
+// }
 
-function newv(v, a, b) { //calculates new horizontal postion, ensures it's within game bounds
-  var newv = parseInt(v, 10) - (d[a] ? x : 0) + (d[b] ? x : 0);
-  if (newv < 0){
-    reset();
-    return 10;
-  }
-  else if (newv > wv){
-    reset();
-    return 10;
-  }
+// function newv(v, a, b) { //calculates new horizontal postion, ensures it's within game bounds
+//   var newv = parseInt(v, 10) - (d[a] ? x : 0) + (d[b] ? x : 0);
+//   if (newv < 0){
+//     reset();
+//     return 10;
+//   }
+//   else if (newv > wv){
+//     reset();
+//     return 10;
+//   }
   
-  if (!wallCheckV(newv)){
-    return newv;
-  }
-  else{
-    return currentv;
-  }
-}
+//   if (!wallCheckV(newv)){
+//     return newv;
+//   }
+//   else{
+//     return currentv;
+//   }
+// }
 
-function wallCheckH(x){
-  return walls.some(i => i[0] < currentv && currentv < i[1] && i[2] < x && x < i[3])
-}
+// function wallCheckH(x){
+//   return walls.some(i => i[0] < currentv && currentv < i[1] && i[2] < x && x < i[3])
+// }
 
-function wallCheckV(x){
-  return walls.some(i => i[0] < x && x < i[1] && i[2] < currenth && currenth < i[3])
-}
+// function wallCheckV(x){
+//   return walls.some(i => i[0] < x && x < i[1] && i[2] < currenth && currenth < i[3])
+// }
 
-function reset(){
-  currentv = 10;
-  currenth = 10;
-  box.css({
-    left: function (i,n) {
-      return 10
-    },
-    top: function (i,n) {
-      return 10
-    }
-  })
-}
+// function reset(){
+//   currentv = 10;
+//   currenth = 10;
+//   box.css({
+//     left: function (i,n) {
+//       return 10
+//     },
+//     top: function (i,n) {
+//       return 10
+//     }
+//   })
+// }
 
-setInterval(function () { // updates and sends new position to server at a set interval
-  if (host === true) {
-    var vert;
-    var hor;
-    box.css({
-      left: function (i, n) {
-        var h = newh(n, 37, 39);
-        hor = h;
-        return h
-      },
-      top: function (i, n) {
-        var v = newv(n, 38, 40);
-        vert = v;
-        return v
-      }
-    });
+// setInterval(function () { // updates and sends new position to server at a set interval
+//   if (host === true) {
+//     var vert;
+//     var hor;
+//     box.css({
+//       left: function (i, n) {
+//         var h = newh(n, 37, 39);
+//         hor = h;
+//         return h
+//       },
+//       top: function (i, n) {
+//         var v = newv(n, 38, 40);
+//         vert = v;
+//         return v
+//       }
+//     });
 
-    if (currentv !== vert || currenth !== hor) {
-      // socket.emit("send_move", { v: vert, h: hor })
-      currentv = vert;
-      currenth = hor;
-    }
-  }
-}, 20); // interval 20ms
+//     if (currentv !== vert || currenth !== hor) {
+//       // socket.emit("send_move", { v: vert, h: hor })
+//       currentv = vert;
+//       currenth = hor;
+//     }
+//   }
+// }, 20); // interval 20ms
   
 socket.on("receive_move", (data) => { //recieves new position from the server
   var v = data.v;
@@ -266,7 +266,7 @@ $(window).keydown(function (e) { //when a key is pressed, it checks whether that
       d[lastinput] = false;
       d[37] = true;
       lastinput = 37;
-    // socket.emit("send_input", (37))
+      socket.emit("send_input", (37))
     }
   }
   if ((e.which === 38 || e.which === 87) /*&& playernum === 2*/) {
@@ -274,7 +274,7 @@ $(window).keydown(function (e) { //when a key is pressed, it checks whether that
       d[lastinput] = false;
       d[38] = true;
       lastinput = 38;
-    // socket.emit("send_input", (38))
+      socket.emit("send_input", (38))
     }
   }
   if ((e.which === 39 || e.which === 68) /*&& playernum === 3*/) {
@@ -282,7 +282,7 @@ $(window).keydown(function (e) { //when a key is pressed, it checks whether that
       d[lastinput] = false;
       d[39] = true;
       lastinput = 39;
-    // socket.emit("send_input", (39))
+      socket.emit("send_input", (39))
     }
   }
   if ((e.which === 40 || e.which === 83) /*&& playernum === 4*/) {
@@ -290,7 +290,7 @@ $(window).keydown(function (e) { //when a key is pressed, it checks whether that
       d[lastinput] = false;
       d[40] = true;
       lastinput = 40;
-    //socket.emit("send_input", (40))
+      socket.emit("send_input", (40))
     }
   }
   // console.log(lastinput);
