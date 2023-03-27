@@ -23,7 +23,7 @@ let paneW = 800,
     wh = paneW - boxW, //calculates the max distance character can go horizontally
     wv = paneV - boxV, //calculates the max distance character can go vertically
     d = {}, //Stores key presses, the key for the current direction is set to 'true'
-    x = 3, //Movement speed
+    x = 2, //Movement speed
     currentv = 200,
     currenth = 300,
     lastinput = 0;
@@ -111,6 +111,6 @@ io.on("connection", (socket) => { // creates socket.io connection
     }, 50); // interval 20msawwadawd
 })
 
-server.listen(3000, "0.0.0.0", () => { // server listens for connections on port 8080
+server.listen(8080, "0.0.0.0", () => { // server listens for connections on port 8080
     console.log("Server running ... ")
 })
