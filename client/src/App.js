@@ -8,6 +8,7 @@ const socket = io.connect("http://13.40.174.86:3000")
 function App() {
 }
 
+dot = $('#dot');
 var pane = $('#box'), //the game box
     box = $('#characterid'), //the character
 //   wh = pane.width() - box.width(), //calculates the max distance character can go horizontally
