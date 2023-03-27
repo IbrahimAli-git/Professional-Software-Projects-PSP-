@@ -2,7 +2,7 @@ const express = require("express")
 const app = express()
 const http = require("http")
 const cors = require("cors")
-const {Server } = require("socket.io") // express server created using cors
+const { Server } = require("socket.io") // express server created using cors
 app.use(cors({ origin: "*" })) // allows for all connections 
 
 const players = [0, 0, 0, 0] // stores a fixed no of players which are assigned a number
@@ -27,6 +27,7 @@ let paneW = 800,
     currentv = 200,
     currenth = 300,
     lastinput = 0;
+    items = [[470, 530, 170, 230, true], [170, 230, 290, 350, true], [170, 230, 50, 110, true]];
 
 function newh(v, a, b) { //calculates new vertical postion, ensures it's within game bounds
     var n = parseInt(v, 10) - (d[a] ? x : 0) + (d[b] ? x : 0);
@@ -38,14 +39,27 @@ function newv(v, a, b) { //calculates new horizontal postion, ensures it's withi
     return n < 0 ? 0 : n > wv ? wv : n;
 }
 
+function itemCheck(h,v) {
+    for(const item of items){
+        if((item[0] <= h && h <= item[1] && item[2] <= v && v <= item[3] && item[4] == true)){
+            item[4] = false;
+            console.log(item[4]);
+            return items.indexOf(item) + 1;
+        } else {
+            return 0;
+        }
+    }
+}
+
+
 io.on("connection", (socket) => { // creates socket.io connection
     let id = socket.id; // id of current client
     let playernum = 0; // assigns a no to each client
-    
+
     socket.emit("receive_move", { v: currentv, h: currenth }) // sends current vertical and horizontal to client
     console.log("User connected: " + id)
 
-    
+
     if (players[0] !== 0 && players[1] !== 0 && players[2] !== 0 && players[3] !== 0) { // checks if room is full
         console.log("Room is full")
     }
@@ -61,52 +75,59 @@ io.on("connection", (socket) => { // creates socket.io connection
             }
         }
     }
-    
+
     socket.emit("receive_index", playernum) // sending player number to client, determines move direction
     console.log(players)
-    
+
     // socket.on("send_move", (data) => { // receives position from client 
     //     currentv = data.v;
     //     currenth = data.h;
     //     socket.broadcast.emit("receive_move", data) // sends new position to other clients
     // });
-    
+
     // socket.on("send_input", (data) => {  // sends key pressed to other clients
     //     socket.broadcast.emit("receive_input", data)
     // });
-    
+
     socket.on("send_input", (data) => { //recieves key press from server
         d[lastinput] = false;
         d[data] = true;
         lastinput = data;
     });
-    
+
     socket.on("disconnect", (socket) => { // disconnects client and removes them from players array 
         console.log("User disconnected: " + id)
         for (var i = 0; i < 4; i++) {
             if (players[i] == id) {
                 players[i] = 0;
                 // for (var i in players){
-                    //     if (i !== 0){
-                        //         io.to (players[i]).emit('new_host') // assigns 
-                        //     }
-                        // }
+                //     if (i !== 0){
+                //         io.to (players[i]).emit('new_host') // assigns 
+                //     }
+                // }
                 break;
             }
         }
         console.log(players)
     })
-    
+
     setInterval(function () { // updates and sends new position to server at a set interval
-    
+
         var h = newh(currenth, 37, 39);
-    
+
         var v = newv(currentv, 38, 40);
-    
+
         if (currentv !== v || currenth !== h) {
             socket.broadcast.emit("receive_move", { v: v, h: h })
             currentv = v;
             currenth = h;
+        }
+ 
+        var i = itemCheck(h, v)
+        
+        if(i != 0){
+             console.log("item collected");
+             socket.broadcast.emit("collect_item", i);
         }
     }, 50); // interval 20msawwadawd
 })
