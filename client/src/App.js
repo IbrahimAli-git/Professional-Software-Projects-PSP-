@@ -9,18 +9,16 @@ function App() {
 }
 
 var dot = $('#dot');
-var items = $('#item');
-
 var pane = $('#box'), //the game box
   box = $('#characterid'), //the character
   //   wh = pane.width() - box.width(), //calculates the max distance character can go horizontally
   //   wv = pane.height() - box.height(), //calculates the max distance character can go vertically
   d = {}, //Stores key presses, the key for the current direction is set to 'true'
   //   x = 3, //Movement speed
-  //   currentv = 200,
-  //   currenth = 300,
-  playernum = 0,
-  lastinput = 0;
+    currentv = 200,
+    currenth = 300,
+    playernum = 0,
+    lastinput = 0;
 //   host = false; //if host = true, then that client is the one doing the movement
 
 socket.on("receive_index", (num) => { //every client that connects recieves a player number from 0-4 (0 if there are already 4 players)
@@ -67,9 +65,9 @@ socket.on("receive_move", (data) => { //recieves new position from the server
   var v = data.v;
   var h = data.h;
 
-  console.log("received")
+  // console.log("received")
   // d[data] = true;
-  console.log(data.v, data.h)
+  // console.log(data.v, data.h)
   box.css({
     left: h,
     top: v
@@ -79,19 +77,9 @@ socket.on("receive_move", (data) => { //recieves new position from the server
   // d[data] = false;
 });
 
-
-function itemCheckH(x){
-  return walls.some(i => i[0] < currentv && currentv < i[1] && i[2] < x && x < i[3])
-}
-
-function itemCheckV(x){
-  return walls.some(i => i[0] < x && x < i[1] && i[2] < currenth && currenth < i[3])
-}
-
-
 $(window).keydown(function (e) { //when a key is pressed, it checks whether that player is allowed to use that key, then sends it to the server
-  console.log("event: " + e.which)
-  console.log("playernum: " + playernum)
+  // console.log("event: " + e.which)
+  // console.log("playernum: " + playernum)
 
   if ((e.which === 37 || e.which === 65)  /*&& playernum === 1*/) {
     if (37 !== lastinput) {
@@ -133,7 +121,10 @@ $(window).keydown(function (e) { //when a key is pressed, it checks whether that
 });
 
 
-
+socket.on("collect_item", (data) => {
+  console.log("document hidden");
+  document.getElementById("dot"+data).style.display = "none";
+})
 
 // socket.on("receive_input", (data) => { //recieves key press from server
 //   d[lastinput] = false;
