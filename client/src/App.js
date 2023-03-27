@@ -79,6 +79,16 @@ socket.on("receive_move", (data) => { //recieves new position from the server
   // d[data] = false;
 });
 
+
+function itemCheckH(x){
+  return walls.some(i => i[0] < currentv && currentv < i[1] && i[2] < x && x < i[3])
+}
+
+function itemCheckV(x){
+  return walls.some(i => i[0] < x && x < i[1] && i[2] < currenth && currenth < i[3])
+}
+
+
 $(window).keydown(function (e) { //when a key is pressed, it checks whether that player is allowed to use that key, then sends it to the server
   console.log("event: " + e.which)
   console.log("playernum: " + playernum)
@@ -123,24 +133,6 @@ $(window).keydown(function (e) { //when a key is pressed, it checks whether that
 });
 
 
-function checkItemCollision() {
-  items.forEach(function (item) {
-    var dx = box.x - item.x; var dy = box.y - item.y;
-    var distance = Math.sqrt(dx * dx + dy * dy);
-    var combinedRadius = box.radius + item.radius;
-    if (distance <= combinedRadius) {
-      // score += item.reward;
-      removeItem(item);
-    }
-  });
-}
-
-function removeItem(item) {
-  var index = items.indexOf(item);
-  if (index > -1) {
-    items.splice(index, 1);
-  }
-}
 
 
 // socket.on("receive_input", (data) => { //recieves key press from server
