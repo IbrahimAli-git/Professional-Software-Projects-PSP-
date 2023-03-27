@@ -3,6 +3,7 @@ const app = express()
 const http = require("http")
 const cors = require("cors")
 const {Server } = require("socket.io") // express server created using cors
+const { cursorTo } = require("readline")
 app.use(cors({ origin: "*" })) // allows for all connections 
 
 const players = [0, 0, 0, 0] // stores a fixed no of players which are assigned a number
@@ -24,11 +25,14 @@ let paneW = 800,
     wv = paneV - boxV, //calculates the max distance character can go vertically
     d = {}, //Stores key presses, the key for the current direction is set to 'true'
     x = 3, //Movement speed
-    startv = 25,
-    starth = 25,
+    startv = 65,
+    starth = 35,
     currentv = startv,
     currenth = starth,
     lastinput = 0,
+    moveV = startv,
+    moveH = starth,
+    hasReset = false,
 
     walls = [/*[250,300,400,500],[100,300,0,190]*/];
 
@@ -36,11 +40,11 @@ function newh(v, a, b) { //calculates new vertical postion, ensures it's within 
     var newh = parseInt(v, 10) - (d[a] ? x : 0) + (d[b] ? x : 0);
     if (newh < 0){
         reset();
-        return 10;
+        return 35;
     }
     else if (newh > wh){
         reset();
-        return 10;
+        return 35;
     }
     
     if (!wallCheckH(newh)){
@@ -51,17 +55,17 @@ function newh(v, a, b) { //calculates new vertical postion, ensures it's within 
     }
 }
     
-function newv(v, a, b) { //calculates new horizontal postion, ensures it's within game bounds
+function newv(v, a, b) { //calculates new vertical postion, ensures it's within game bounds
     var newv = parseInt(v, 10) - (d[a] ? x : 0) + (d[b] ? x : 0);
     if (newv < 0){
         reset();
-        return 10;
+        return 65;
     }
-    else if (newv > wv){
+    else if (newv > wh){
         reset();
-        return 10;
+        return 65;
     }
-
+    
     if (!wallCheckV(newv)){
         return newv;
     }
@@ -81,6 +85,7 @@ function wallCheckV(x){
 function reset(){
     currentv = startv;
     currenth = starth;
+    hasReset = true;
 }
 
 io.on("connection", (socket) => { // creates socket.io connection
@@ -144,15 +149,20 @@ io.on("connection", (socket) => { // creates socket.io connection
     
     setInterval(function () { // updates and sends new position to server at a set interval
     
-        var h = newh(currenth, 37, 39);
-        var v = newv(currentv, 38, 40);
+        moveV = newv(currentv, 38, 40);
+        moveH = newh(currenth, 37, 39);
     
-        if (currentv !== v || currenth !== h) {
-            socket.broadcast.emit("receive_move", { v: v, h: h })
-            currentv = v;
-            currenth = h;
+        if(hasReset){
+            d[lastinput] = false;
+            socket.broadcast.emit("receive_move", { v: currentv, h: currenth })
+            hasReset = false;
         }
-    }, 20); // interval 20ms
+        else if (currentv !== moveV || currenth !== moveH) {
+            socket.broadcast.emit("receive_move", { v: moveV, h: moveH })
+            currentv = moveV;
+            currenth = moveH;
+        }
+    }, 50); // interval 20ms
 })
 
 server.listen(8080, "0.0.0.0", () => { // server listens for connections on port 8080
