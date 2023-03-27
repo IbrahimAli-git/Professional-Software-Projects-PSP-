@@ -24,8 +24,10 @@ let paneW = 800,
     wv = paneV - boxV, //calculates the max distance character can go vertically
     d = {}, //Stores key presses, the key for the current direction is set to 'true'
     x = 3, //Movement speed
-    currentv = 251,
-    currenth = 8,
+    startv = 25,
+    starth = 25,
+    currentv = startv,
+    currenth = starth,
     lastinput = 0,
 
     walls = [/*[250,300,400,500],[100,300,0,190]*/];
@@ -34,11 +36,11 @@ function newh(v, a, b) { //calculates new vertical postion, ensures it's within 
     var newh = parseInt(v, 10) - (d[a] ? x : 0) + (d[b] ? x : 0);
     if (newh < 0){
         reset();
-        return 8;
+        return 10;
     }
     else if (newh > wh){
         reset();
-        return 8;
+        return 10;
     }
     
     if (!wallCheckH(newh)){
@@ -53,11 +55,11 @@ function newv(v, a, b) { //calculates new horizontal postion, ensures it's withi
     var newv = parseInt(v, 10) - (d[a] ? x : 0) + (d[b] ? x : 0);
     if (newv < 0){
         reset();
-        return 251;
+        return 10;
     }
     else if (newv > wv){
         reset();
-        return 251;
+        return 10;
     }
 
     if (!wallCheckV(newv)){
@@ -77,16 +79,8 @@ function wallCheckV(x){
 }
 
 function reset(){
-    currentv = 10;
-    currenth = 10;
-    box.css({
-    left: function (i,n) {
-        return 8
-    },
-    top: function (i,n) {
-        return 251
-    }
-    })
+    currentv = startv;
+    currenth = starth;
 }
 
 io.on("connection", (socket) => { // creates socket.io connection
@@ -151,7 +145,6 @@ io.on("connection", (socket) => { // creates socket.io connection
     setInterval(function () { // updates and sends new position to server at a set interval
     
         var h = newh(currenth, 37, 39);
-    
         var v = newv(currentv, 38, 40);
     
         if (currentv !== v || currenth !== h) {
@@ -159,7 +152,7 @@ io.on("connection", (socket) => { // creates socket.io connection
             currentv = v;
             currenth = h;
         }
-    }, 50); // interval 20msawwadawd
+    }, 20); // interval 20ms
 })
 
 server.listen(8080, "0.0.0.0", () => { // server listens for connections on port 8080

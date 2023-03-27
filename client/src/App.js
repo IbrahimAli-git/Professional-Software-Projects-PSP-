@@ -140,14 +140,14 @@ function App() {
 
 var pane = $('#box'), //the game box
     box = $('#characterid'), //the character
-    wh = pane.width() - box.width(), //calculates the max distance character can go horizontally
-    wv = pane.height() - box.height(), //calculates the max distance character can go vertically
-    d = {}, //Stores key presses, the key for the current direction is set to 'true'
-    x = 3, //Movement speed
-    currentv = 10,
-    currenth = 10,
-    playernum = 0,
-    lastinput = 0;
+    // wh = pane.width() - box.width(), //calculates the max distance character can go horizontally
+    // wv = pane.height() - box.height(), //calculates the max distance character can go vertically
+    // d = {}, //Stores key presses, the key for the current direction is set to 'true'
+    // x = 3, //Movement speed
+    // currentv = 10,
+    // currenth = 10,
+    playernum = 0;
+    // lastinput = 0;
     // host = true, //if host = true, then that client is the one doing the movement
 
     // walls = [/*[250,300,400,500],[100,300,0,190]*/];
@@ -245,9 +245,9 @@ socket.on("receive_move", (data) => { //recieves new position from the server
   var v = data.v;
   var h = data.h;
 
-  console.log("received")
+  // console.log("received")
   // d[data] = true;
-  console.log(data.v, data.h)
+  // console.log(data.v, data.h)
   box.css({
     left: h,
     top: v
@@ -258,8 +258,8 @@ socket.on("receive_move", (data) => { //recieves new position from the server
 });
 
 $(window).keydown(function (e) { //when a key is pressed, it checks whether that player is allowed to use that key, then sends it to the server
-  console.log("event: " + e.which)
-  console.log("playernum: " + playernum)
+  // console.log("event: " + e.which)
+  // console.log("playernum: " + playernum)
 
   if ((e.which === 37 || e.which === 65) /*&& playernum === 1*/) {
     if (37 !== lastinput) {
