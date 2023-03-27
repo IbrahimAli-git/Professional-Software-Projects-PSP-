@@ -262,36 +262,36 @@ $(window).keydown(function (e) { //when a key is pressed, it checks whether that
   // console.log("playernum: " + playernum)
 
   if ((e.which === 37 || e.which === 65) /*&& playernum === 1*/) {
-    if (37 !== lastinput) {
-      d[lastinput] = false;
-      d[37] = true;
-      lastinput = 37;
-      socket.emit("send_input", (37))
-    }
+    // if (37 !== lastinput) {
+    //   d[lastinput] = false;
+    //   d[37] = true;
+    //   lastinput = 37;
+    socket.emit("send_input", (37))
+    // }
   }
   if ((e.which === 38 || e.which === 87) /*&& playernum === 2*/) {
-    if (38 !== lastinput) {
-      d[lastinput] = false;
-      d[38] = true;
-      lastinput = 38;
-      socket.emit("send_input", (38))
-    }
+    // if (38 !== lastinput) {
+    //   d[lastinput] = false;
+    //   d[38] = true;
+    //   lastinput = 38;
+    socket.emit("send_input", (38))
+    // }
   }
   if ((e.which === 39 || e.which === 68) /*&& playernum === 3*/) {
-    if (39 !== lastinput) {
-      d[lastinput] = false;
-      d[39] = true;
-      lastinput = 39;
-      socket.emit("send_input", (39))
-    }
+    // if (39 !== lastinput) {
+    //   d[lastinput] = false;
+    //   d[39] = true;
+    //   lastinput = 39;
+    socket.emit("send_input", (39))
+    // }
   }
   if ((e.which === 40 || e.which === 83) /*&& playernum === 4*/) {
-    if (40 !== lastinput) {
-      d[lastinput] = false;
-      d[40] = true;
-      lastinput = 40;
-      socket.emit("send_input", (40))
-    }
+    // if (40 !== lastinput) {
+    //   d[lastinput] = false;
+    //   d[40] = true;
+    //   lastinput = 40;
+    socket.emit("send_input", (40))
+    // }
   }
   // console.log(lastinput);
 });
