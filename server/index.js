@@ -34,7 +34,7 @@ let paneW = 800,
     moveH = starth,
     hasReset = false,
 
-    walls = [/*[250,300,400,500],[100,300,0,190]*/];
+    walls = [[8,50,2,798],[171,224,228,516],[78,368,2,53],[257,313,62,348],[86,141,396,686],[109,289,726,792]];
 
 function newh(v, a, b) { //calculates new vertical postion, ensures it's within game bounds
     var newh = parseInt(v, 10) - (d[a] ? x : 0) + (d[b] ? x : 0);
@@ -61,7 +61,7 @@ function newv(v, a, b) { //calculates new vertical postion, ensures it's within 
         reset();
         return 65;
     }
-    else if (newv > wh){
+    else if (newv > wv){
         reset();
         return 65;
     }
@@ -151,7 +151,7 @@ io.on("connection", (socket) => { // creates socket.io connection
     
         moveV = newv(currentv, 38, 40);
         moveH = newh(currenth, 37, 39);
-    
+
         if(hasReset){
             d[lastinput] = false;
             socket.broadcast.emit("receive_move", { v: currentv, h: currenth })
