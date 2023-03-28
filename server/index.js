@@ -28,6 +28,7 @@ let paneW = 800,
     currentv = 200,
     currenth = 300,
     lastinput = 0,
+    score = 0,
     items = [];
 
 function newh(v, a, b) { //calculates new vertical postion, ensures it's within game bounds
@@ -54,10 +55,9 @@ function itemCheck(h,v) { // searches through items array for specific item
 io.on("connection", (socket) => { // creates socket.io connection
     let id = socket.id; // id of current client
     let playernum = 0; // assigns a no to each client
-
+    
     socket.emit("receive_move", { v: currentv, h: currenth }) // sends current vertical and horizontal to client
     console.log("User connected: " + id)
-
     
     socket.on("send_items", (data) => {
         if(items.length == 0){
@@ -65,7 +65,7 @@ io.on("connection", (socket) => { // creates socket.io connection
             items.push(data.d2);
             items.push(data.d3);
         }
-        socket.emit("item_state", {i1:items[0][4], i2:items[1][4], i3:items[2][4]})
+        socket.emit("item_state", {i1:items[0][4], i2:items[1][4], i3:items[2][4]});
         console.log(items);
     })
     if (players[0] !== 0 && players[1] !== 0 && players[2] !== 0 && players[3] !== 0) { // checks if room is full
@@ -92,48 +92,49 @@ io.on("connection", (socket) => { // creates socket.io connection
     //     currenth = data.h;
     //     socket.broadcast.emit("receive_move", data) // sends new position to other clients
     // });
-
+    
     // socket.on("send_input", (data) => {  // sends key pressed to other clients
     //     socket.broadcast.emit("receive_input", data)
     // });
-
+    
     socket.on("send_input", (data) => { //recieves key press from server
         d[lastinput] = false;
         d[data] = true;
         lastinput = data;
     });
-
+    
     socket.on("disconnect", (socket) => { // disconnects client and removes them from players array 
         console.log("User disconnected: " + id)
         for (var i = 0; i < 4; i++) {
             if (players[i] == id) {
                 players[i] = 0;
                 // for (var i in players){
-                //     if (i !== 0){
-                //         io.to (players[i]).emit('new_host') // assigns 
-                //     }
-                // }
-                break;
+                    //     if (i !== 0){
+                        //         io.to (players[i]).emit('new_host') // assigns 
+                    //     }
+                    // }
+                    break;
+                }
             }
-        }
-        console.log(players)
-    })
-
-    setInterval(function () { // updates and sends new position to server at a set interval
-        var h = newh(currenth, 37, 39);
-        var v = newv(currentv, 38, 40);
-
-        if (currentv !== v || currenth !== h) {
-            socket.broadcast.emit("receive_move", { v: v, h: h })
-            currentv = v;
-            currenth = h;
-        }
- 
-        var i = itemCheck(h, v);
+            console.log(players)
+        })
+        
+        setInterval(function () { // updates and sends new position to server at a set interval
+            socket.emit("current_score", {s: score});
+            var h = newh(currenth, 37, 39);
+            var v = newv(currentv, 38, 40);
+            
+            if (currentv !== v || currenth !== h) {
+                socket.broadcast.emit("receive_move", { v: v, h: h })
+                currentv = v;
+                currenth = h;
+            }
+        
+            var i = itemCheck(h, v);
         if(i != 0){
-             console.log("item collected");
-             socket.broadcast.emit("collect_item", i);
-
+            score++;
+            console.log("score: " + score);
+            socket.broadcast.emit("collect_item", i);
         }
     }, 50); // interval 20ms
 })

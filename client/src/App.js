@@ -5,7 +5,7 @@ const socket = io.connect("http://localhost:8080")
 // connects clients with server using current local ip address on port 8080
 // port 8080 used instead of 3000
 
-function App() {
+function App() { 
 }
 
 
@@ -21,8 +21,14 @@ d = {}, //Stores key presses, the key for the current direction is set to 'true'
 currentv = 200,
 currenth = 300,
 playernum = 0,
-lastinput = 0;
+lastinput = 0,
+score = 0;
 //   host = false; //if host = true, then that client is the one doing the movement
+
+socket.on("current_score", (data) =>{
+  score = data.s;
+  document.getElementById("score").innerHTML = "Score: " + score;
+});
 
 socket.on("receive_index", (num) => { //every client that connects recieves a player number from 0-4 (0 if there are already 4 players)
   playernum = num;
@@ -53,13 +59,15 @@ socket.on("item_state", (data) =>{
   if(data.i3){
     document.getElementById("dot3").style.visibility = "visible";   
   }
-
 })
+
 
 socket.on("collect_item", (data) => {
   console.log("document hidden");
   document.getElementById("dot"+data).style.visibility = "hidden";
 })
+
+
 
 // function newh(v, a, b) { //calculates new vertical postion, ensures it's within game bounds
 //   var n = parseInt(v, 10) - (d[a] ? x : 0) + (d[b] ? x : 0);
