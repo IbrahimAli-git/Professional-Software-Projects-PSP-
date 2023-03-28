@@ -139,6 +139,36 @@ footer .briefbtn {
   margin-left: 17px;
 }
 
+/* Collectable Items */
+.wheel1 {
+  position: absolute;
+  right: 30%;
+  top: 25%;
+}
+
+.wheel2 {
+  position: absolute;
+  top: 95%;
+  left: 5%;
+}
+
+.wheel3 {
+  position: absolute;
+  top: -5%;
+  left: 15%;
+}
+
+.washer {
+  position: absolute;
+  top: -10%;
+}
+
+.nut {
+  position: absolute;
+  left: 85%;
+  top: 83%;
+}
+
 /* Walls */
 .wall-top {
  margin-top: 15px;
