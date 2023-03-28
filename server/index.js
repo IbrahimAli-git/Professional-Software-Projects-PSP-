@@ -33,6 +33,7 @@ let paneW = 800,
     moveV = startv,
     moveH = starth,
     hasReset = false,
+    bounce = 0,
 
     walls = [[8,50,2,798],[171,224,228,516],[78,368,2,53],[257,313,62,348],[86,141,396,686],[109,289,726,792]];//wall boundaries currently hard coded
 
@@ -51,7 +52,18 @@ function newh(v, a, b) { //calculates new vertical postion, ensures it's within 
         return newh;
     }
     else{
-        return currenth;
+        if (newh > currenth){
+            d[lastinput] = false;
+            d[37] = true;
+            lastinput = 37;
+            return currenth;
+        }
+        else{
+            d[lastinput] = false;
+            d[39] = true;
+            lastinput = 39;
+            return currenth
+        };
     }
 }
     
@@ -70,7 +82,18 @@ function newv(v, a, b) { //calculates new vertical postion, ensures it's within 
         return newv;
     }
     else{
-        return currentv;
+        if (newv > currentv){
+            d[lastinput] = false;
+            d[38] = true;
+            lastinput = 38;
+            return currentv;
+        }
+        else{
+            d[lastinput] = false;
+            d[40] = true;
+            lastinput = 40;
+            return currentv;
+        }
     }
 }
 
@@ -133,7 +156,7 @@ io.on("connection", (socket) => { // creates socket.io connection
     
         moveV = newv(currentv, 38, 40);
         moveH = newh(currenth, 37, 39);
-
+        
         if(hasReset){
             d[lastinput] = false;
             socket.broadcast.emit("receive_move", { v: currentv, h: currenth })
