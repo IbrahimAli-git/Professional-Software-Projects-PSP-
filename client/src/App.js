@@ -21,8 +21,7 @@ d = {}, //Stores key presses, the key for the current direction is set to 'true'
 currentv = 200,
 currenth = 300,
 playernum = 0,
-lastinput = 0,
-items = [];
+lastinput = 0;
 //   host = false; //if host = true, then that client is the one doing the movement
 
 socket.on("receive_index", (num) => { //every client that connects recieves a player number from 0-4 (0 if there are already 4 players)
