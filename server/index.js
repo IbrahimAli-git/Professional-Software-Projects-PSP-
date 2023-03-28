@@ -16,6 +16,7 @@ const io = new Server(server, {
     }
 })
   
+
 let paneW = 800,
     paneV = 400, //the game box
     boxW = 20,
@@ -27,7 +28,7 @@ let paneW = 800,
     currentv = 200,
     currenth = 300,
     lastinput = 0,
-    items = [[470, 530, 170, 230, true], [170, 230, 290, 350, true], [170, 230, 50, 110, true]];
+    items = [];
 
 function newh(v, a, b) { //calculates new vertical postion, ensures it's within game bounds
     var n = parseInt(v, 10) - (d[a] ? x : 0) + (d[b] ? x : 0);
@@ -57,7 +58,16 @@ io.on("connection", (socket) => { // creates socket.io connection
     socket.emit("receive_move", { v: currentv, h: currenth }) // sends current vertical and horizontal to client
     console.log("User connected: " + id)
 
-
+    
+    socket.on("send_items", (data) => {
+        if(items.length == 0){
+            items.push(data.d1);
+            items.push(data.d2);
+            items.push(data.d3);
+        }
+        socket.emit("item_state", {i1:items[0][4], i2:items[1][4], i3:items[2][4]})
+        console.log(items);
+    })
     if (players[0] !== 0 && players[1] !== 0 && players[2] !== 0 && players[3] !== 0) { // checks if room is full
         console.log("Room is full")
     }

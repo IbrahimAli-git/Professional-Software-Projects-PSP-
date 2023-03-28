@@ -8,23 +8,59 @@ const socket = io.connect("http://localhost:8080")
 function App() {
 }
 
-var dot = $('#dot');
+
+var dot1 = $('#dot1');
+var dot2 = $('#dot2');
+var dot3 = $('#dot3');
 var pane = $('#box'), //the game box
-  box = $('#characterid'), //the character
-  //   wh = pane.width() - box.width(), //calculates the max distance character can go horizontally
-  //   wv = pane.height() - box.height(), //calculates the max distance character can go vertically
-  d = {}, //Stores key presses, the key for the current direction is set to 'true'
-  //   x = 3, //Movement speed
-    currentv = 200,
-    currenth = 300,
-    playernum = 0,
-    lastinput = 0;
+box = $('#characterid'), //the character
+//   wh = pane.width() - box.width(), //calculates the max distance character can go horizontally
+//   wv = pane.height() - box.height(), //calculates the max distance character can go vertically
+d = {}, //Stores key presses, the key for the current direction is set to 'true'
+//   x = 3, //Movement speed
+currentv = 200,
+currenth = 300,
+playernum = 0,
+lastinput = 0,
+items = [];
 //   host = false; //if host = true, then that client is the one doing the movement
 
 socket.on("receive_index", (num) => { //every client that connects recieves a player number from 0-4 (0 if there are already 4 players)
   playernum = num;
   console.log("playernum: " + playernum)
 });
+
+var th = parseInt(dot1.css("left").slice(0,3));
+var tv = parseInt(dot1.css("top").slice(0,3));
+var data1=[th-30,th+30,tv-30,tv+30, true];
+th = parseInt(dot2.css("left").slice(0,3));
+tv = parseInt(dot2.css("top").slice(0,3));
+var data2=[th-30,th+30,tv-30,tv+30, true];
+th = parseInt(dot3.css("left").slice(0,3));
+tv = parseInt(dot3.css("top").slice(0,3));
+var data3=[th-30,th+30,tv-30,tv+30, true];
+socket.emit("send_items", {d1:data1,d2:data2,d3:data3});
+console.log("client sent items");
+
+
+socket.on("item_state", (data) =>{
+  if(data.i1){
+    document.getElementById("dot1").style.visibility = "visible";   
+  }
+  if(data.i2){
+    document.getElementById("dot2").style.visibility = "visible";   
+  }
+ 
+  if(data.i3){
+    document.getElementById("dot3").style.visibility = "visible";   
+  }
+
+})
+
+socket.on("collect_item", (data) => {
+  console.log("document hidden");
+  document.getElementById("dot"+data).style.visibility = "hidden";
+})
 
 // function newh(v, a, b) { //calculates new vertical postion, ensures it's within game bounds
 //   var n = parseInt(v, 10) - (d[a] ? x : 0) + (d[b] ? x : 0);
@@ -121,10 +157,7 @@ $(window).keydown(function (e) { //when a key is pressed, it checks whether that
 });
 
 
-socket.on("collect_item", (data) => {
-  console.log("document hidden");
-  document.getElementById("dot"+data).style.display = "none";
-})
+
 
 // socket.on("receive_input", (data) => { //recieves key press from server
 //   d[lastinput] = false;

@@ -175,6 +175,7 @@ footer .briefbtn {
   position: absolute;
   left: 500px;
   top: 200px;
+  visibility: hidden;
 }
 
 .Dot2{
@@ -186,6 +187,7 @@ footer .briefbtn {
   position: absolute;
   left: 200px;
   top: 320px;
+  visibility: hidden;
 }
 
 .Dot3{
@@ -197,4 +199,5 @@ footer .briefbtn {
   position: absolute;
   left: 200px;
   top: 80px;
+  visibility: hidden;
 }
