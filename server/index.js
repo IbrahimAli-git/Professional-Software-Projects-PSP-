@@ -15,7 +15,7 @@ const io = new Server(server, {
         credentials: true
     }
 })
-
+  
 let paneW = 800,
     paneV = 400, //the game box
     boxW = 20,
@@ -39,7 +39,7 @@ function newv(v, a, b) { //calculates new horizontal postion, ensures it's withi
     return n < 0 ? 0 : n > wv ? wv : n;
 }
 
-function itemCheck(h,v) {
+function itemCheck(h,v) { // searches through items array for specific item
     for(const item of items){
         if((item[0] <= h && h <= item[1] && item[2] <= v && v <= item[3] && item[4] == true)){
             item[4] = false;
