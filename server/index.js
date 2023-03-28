@@ -26,7 +26,7 @@ let paneW = 800,
     x = 2, //Movement speed
     currentv = 200,
     currenth = 300,
-    lastinput = 0;
+    lastinput = 0,
     items = [[470, 530, 170, 230, true], [170, 230, 290, 350, true], [170, 230, 50, 110, true]];
 
 function newh(v, a, b) { //calculates new vertical postion, ensures it's within game bounds
@@ -43,14 +43,12 @@ function itemCheck(h,v) {
     for(const item of items){
         if((item[0] <= h && h <= item[1] && item[2] <= v && v <= item[3] && item[4] == true)){
             item[4] = false;
-            console.log(item[4]);
+            console.log(item);
             return items.indexOf(item) + 1;
-        } else {
-            return 0;
         }
     }
+    return 0;
 }
-
 
 io.on("connection", (socket) => { // creates socket.io connection
     let id = socket.id; // id of current client
@@ -112,9 +110,7 @@ io.on("connection", (socket) => { // creates socket.io connection
     })
 
     setInterval(function () { // updates and sends new position to server at a set interval
-
         var h = newh(currenth, 37, 39);
-
         var v = newv(currentv, 38, 40);
 
         if (currentv !== v || currenth !== h) {
@@ -123,13 +119,13 @@ io.on("connection", (socket) => { // creates socket.io connection
             currenth = h;
         }
  
-        var i = itemCheck(h, v)
-        
+        var i = itemCheck(h, v);
         if(i != 0){
              console.log("item collected");
              socket.broadcast.emit("collect_item", i);
+
         }
-    }, 50); // interval 20msawwadawd
+    }, 50); // interval 20ms
 })
 
 server.listen(8080, "0.0.0.0", () => { // server listens for connections on port 8080
