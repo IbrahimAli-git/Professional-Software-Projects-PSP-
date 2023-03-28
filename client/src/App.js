@@ -5,176 +5,89 @@ const socket = io.connect("http://localhost:8080")
 // connects clients with server using current local ip address on port 8080
 // port 8080 used instead of 3000
 
-function App() { 
+function App() {
 }
 
+var box = $('#characterid'); //the character
+var    playernum = 0;
+var dot1 = $('#item1');
+var dot2 = $('#item2');
+var dot3 = $('#item3');
+var dot4 = $('#item4');
+var dot5 = $('#item5');
+var score = 0;
 
-var dot1 = $('#dot1');
-var dot2 = $('#dot2');
-var dot3 = $('#dot3');
-var pane = $('#box'), //the game box
-box = $('#characterid'), //the character
-//   wh = pane.width() - box.width(), //calculates the max distance character can go horizontally
-//   wv = pane.height() - box.height(), //calculates the max distance character can go vertically
-d = {}, //Stores key presses, the key for the current direction is set to 'true'
-//   x = 3, //Movement speed
-currentv = 200,
-currenth = 300,
-playernum = 0,
-lastinput = 0,
-score = 0;
-//   host = false; //if host = true, then that client is the one doing the movement
-
-socket.on("current_score", (data) =>{
-  score = data.s;
-  document.getElementById("score").innerHTML = "Score: " + score;
-});
 
 socket.on("receive_index", (num) => { //every client that connects recieves a player number from 0-4 (0 if there are already 4 players)
   playernum = num;
   console.log("playernum: " + playernum)
 });
 
-var th = parseInt(dot1.css("left").slice(0,3));
-var tv = parseInt(dot1.css("top").slice(0,3));
-var data1=[th-30,th+30,tv-30,tv+30, true];
-th = parseInt(dot2.css("left").slice(0,3));
-tv = parseInt(dot2.css("top").slice(0,3));
-var data2=[th-30,th+30,tv-30,tv+30, true];
-th = parseInt(dot3.css("left").slice(0,3));
-tv = parseInt(dot3.css("top").slice(0,3));
-var data3=[th-30,th+30,tv-30,tv+30, true];
-socket.emit("send_items", {d1:data1,d2:data2,d3:data3});
-console.log("client sent items");
-
-
-socket.on("item_state", (data) =>{
-  if(data.i1){
-    document.getElementById("dot1").style.visibility = "visible";   
-  }
-  if(data.i2){
-    document.getElementById("dot2").style.visibility = "visible";   
-  }
- 
-  if(data.i3){
-    document.getElementById("dot3").style.visibility = "visible";   
-  }
-})
-
-
-socket.on("collect_item", (data) => {
-  console.log("document hidden");
-  document.getElementById("dot"+data).style.visibility = "hidden";
-})
-
-
-
-// function newh(v, a, b) { //calculates new vertical postion, ensures it's within game bounds
-//   var n = parseInt(v, 10) - (d[a] ? x : 0) + (d[b] ? x : 0);
-//   return n < 0 ? 0 : n > wh ? wh : n;
-// }
-
-// function newv(v, a, b) { //calculates new horizontal postion, ensures it's within game bounds
-//   var n = parseInt(v, 10) - (d[a] ? x : 0) + (d[b] ? x : 0);
-//   return n < 0 ? 0 : n > wv ? wv : n;
-// }
-
-// setInterval(function () { // updates and sends new position to server at a set interval
-//   if (host === true) {
-//     var vert;
-//     var hor;
-//     box.css({
-//       left: function (i, n) {
-//         var h = newh(n, 37, 39);
-//         hor = h;
-//         return h
-//       },
-//       top: function (i, n) {
-//         var v = newv(n, 38, 40);
-//         vert = v;
-//         return v
-//       }
-//     });
-
-//     if (currentv !== vert || currenth !== hor) {
-//       socket.emit("send_move", { v: vert, h: hor })
-//       currentv = vert;
-//       currenth = hor;
-//     }
-//   }
-// }, 20); // interval 20ms
+socket.on("current_score", (data) =>{
+  score = data.s;
+  document.getElementById("score").innerHTML = "Score: " + score;
+});
 
 socket.on("receive_move", (data) => { //recieves new position from the server
   var v = data.v;
   var h = data.h;
 
-  // console.log("received")
-  // d[data] = true;
-  // console.log(data.v, data.h)
   box.css({
     left: h,
     top: v
   });
-  // currentv = v;
-  // currenth = h;
-  // d[data] = false;
+});
+
+function cssData(dot) {
+  var th = parseInt(dot.css("left").slice(0,3));
+  var tv = parseInt(dot.css("top").slice(0,3));
+  var data=[th-30,th+30,tv-30,tv+30, true];
+  return data;
+}
+
+socket.emit("send_items", {d1:cssData(dot1),d2:cssData(dot2),d3:cssData(dot3),d4:cssData(dot4),d5:cssData(dot5)});
+console.log("client sent items");
+
+
+socket.on("item_state", (data) =>{
+  console.log(data.i1 + "........" + data.i2)
+  if(data.i1){
+    document.getElementById("item1").style.visibility = "visible";   
+  }
+  if(data.i2){
+    document.getElementById("item2").style.visibility = "visible";   
+  }
+  if(data.i3){
+    document.getElementById("item3").style.visibility = "visible";   
+  }
+  if(data.i4){
+    document.getElementById("item4").style.visibility = "visible";   
+  }
+  if(data.i5){
+    document.getElementById("item5").style.visibility = "visible";   
+  }
+});
+
+
+socket.on("collect_item", (data) => {
+  console.log("hide item: " + data);
+  document.getElementById("item"+data).style.visibility = "hidden";
 });
 
 $(window).keydown(function (e) { //when a key is pressed, it checks whether that player is allowed to use that key, then sends it to the server
-  // console.log("event: " + e.which)
-  // console.log("playernum: " + playernum)
 
-  if ((e.which === 37 || e.which === 65)  /*&& playernum === 1*/) {
-    if (37 !== lastinput) {
-      d[lastinput] = false;
-      d[37] = true;
-      lastinput = 37;
-      socket.emit("send_input", (37))
-      // }
-    }
+  if ((e.which === 37 || e.which === 65) /*&& playernum === 1*/) {
+    socket.emit("send_input", (37))
   }
   if ((e.which === 38 || e.which === 87) /*&& playernum === 2*/) {
-    if (38 !== lastinput) {
-      d[lastinput] = false;
-      d[38] = true;
-      lastinput = 38;
-      socket.emit("send_input", (38))
-      // }
-    }
+    socket.emit("send_input", (38))
   }
   if ((e.which === 39 || e.which === 68) /*&& playernum === 3*/) {
-    if (39 !== lastinput) {
-      d[lastinput] = false;
-      d[39] = true;
-      lastinput = 39;
-      socket.emit("send_input", (39))
-      // }
-    }
+    socket.emit("send_input", (39))
   }
   if ((e.which === 40 || e.which === 83) /*&& playernum === 4*/) {
-    if (40 !== lastinput) {
-      d[lastinput] = false;
-      d[40] = true;
-      lastinput = 40;
-      socket.emit("send_input", (40))
-      // }
-    }
+    socket.emit("send_input", (40))
   }
-  // console.log(lastinput);
 });
-
-
-
-
-// socket.on("receive_input", (data) => { //recieves key press from server
-//   d[lastinput] = false;
-//   d[data] = true;
-//   lastinput = data;
-// });
-
-// socket.on("new_host", () => { //server has designated a new 'host'
-//   host = true;
-//   console.log("host" + host);
-// });
 
 export default App;
