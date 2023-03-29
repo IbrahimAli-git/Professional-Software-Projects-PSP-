@@ -129,8 +129,6 @@ function reset() {
     moveh = starth;
     moveV = startv;
     hasReset = true;
-    timeLeft = 60;
-    gameRunning = true;
 }
 
 
@@ -169,6 +167,8 @@ io.on("connection", (socket) => { // creates socket.io connection
         }
         socket.emit("item_state", {i1:itemStates[0], i2:itemStates[1], i3:itemStates[2], i4:itemStates[3], i5:itemStates[4]});
         socket.broadcast.emit("item_state", {i1:itemStates[0], i2:itemStates[1], i3:itemStates[2], i4:itemStates[3], i5:itemStates[4]});
+        timeLeft = 60;
+        gameRunning = true;
     })
 
     socket.on("send_items", (data) => {
