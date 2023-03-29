@@ -26,7 +26,7 @@ let paneW = 800,
     d = {}, //Stores key presses, the key for the current direction is set to 'true'
     x = 3, //Movement speed
     startv = 65,
-    starth = 35,
+    starth = 28,
     currentv = startv,
     currenth = starth,
     lastinput = 0,
@@ -36,6 +36,7 @@ let paneW = 800,
     items = [],
     hasReset = false,
     itemStates = [],
+    timeLeft = 60,
     walls = [[8,50,2,798],[171,224,228,516],[78,368,2,53],[257,313,62,348],[86,141,396,686],[109,289,726,792]];//wall boundaries currently hard coded
 
     function newh(v, a, b) { //calculates new vertical postion, ensures it's within game bounds
@@ -179,10 +180,22 @@ io.on("connection", (socket) => { // creates socket.io connection
             }
         }
         console.log(players)
-    })
+    });
+
+    var timerId = setInterval(handler, 1001);
+    function handler() {
+      if (timeLeft >= 0) {
+        socket.broadcast.emit("receive_time", timeLeft);
+        timeLeft--;
+      } else {
+            socket.emit("stop_game");
+      }
+    }
+    // handler();
     
     setInterval(function () { // updates and sends new position to clients at a set interval
         socket.emit("item_state", {i1:itemStates[0], i2:itemStates[1], i3:itemStates[2], i4:itemStates[3], i5:itemStates[4]});
+        socket.broadcast.emit("item_state", {i1:itemStates[0], i2:itemStates[1], i3:itemStates[2], i4:itemStates[3], i5:itemStates[4]});
         socket.emit("current_score", {s: score});
         moveV = newv(currentv, 38, 40);
         moveH = newh(currenth, 37, 39);

@@ -1,5 +1,5 @@
 import './App.css';
-import $ from 'jquery'
+import $, { data } from 'jquery'
 import io from "socket.io-client"
 const socket = io.connect("http://localhost:8080")
 // connects clients with server using current local ip address on port 8080
@@ -15,7 +15,7 @@ var dot2 = $('#item2');
 var dot3 = $('#item3');
 var dot4 = $('#item4');
 var dot5 = $('#item5');
-var score = 0;
+var timeLeft = 0;
 
 
 socket.on("receive_index", (num) => { //every client that connects recieves a player number from 0-4 (0 if there are already 4 players)
@@ -24,8 +24,7 @@ socket.on("receive_index", (num) => { //every client that connects recieves a pl
 });
 
 socket.on("current_score", (data) =>{
-  score = data.s;
-  document.getElementById("score").innerHTML = "Score: " + score;
+  document.getElementById("score").innerHTML = "Score: " +data.s;
 });
 
 socket.on("receive_move", (data) => { //recieves new position from the server
@@ -37,6 +36,7 @@ socket.on("receive_move", (data) => { //recieves new position from the server
     top: v
   });
 });
+
 
 function cssData(dot) {
   var th = parseInt(dot.css("left").slice(0,3));
@@ -74,7 +74,7 @@ socket.on("collect_item", (data) => {
 });
 
 $(window).keydown(function (e) { //when a key is pressed, it checks whether that player is allowed to use that key, then sends it to the server
-
+  
   if ((e.which === 37 || e.which === 65) /*&& playernum === 1*/) {
     socket.emit("send_input", (37))
   }
@@ -88,5 +88,12 @@ $(window).keydown(function (e) { //when a key is pressed, it checks whether that
     socket.emit("send_input", (40))
   }
 });
+// https://stackoverflow.com/questions/4435776/simple-clock-that-counts-down-from-30-seconds-and-executes-a-function-afterward
+socket.on("receive_time", (data) => {
+  timeLeft = data;
+  var elem = document.getElementById('time');
+  elem.innerHTML = timeLeft;
+
+})
 
 export default App;
