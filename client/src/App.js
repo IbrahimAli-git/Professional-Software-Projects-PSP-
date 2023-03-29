@@ -41,7 +41,7 @@ socket.on("receive_move", (data) => { //recieves new position from the server
 function cssData(dot) {
   var th = parseInt(dot.css("left").slice(0,3));
   var tv = parseInt(dot.css("top").slice(0,3));
-  var data=[th-30,th+30,tv-30,tv+30, true];
+  var data=[th-25,th+25,tv-25,tv+25, true];
   return data;
 }
 
@@ -84,6 +84,9 @@ socket.on("item_state", (data) =>{
 });
 
 $(window).keydown(function (e) { //when a key is pressed, it checks whether that player is allowed to use that key, then sends it to the server
+  if ((e.which === 82)) {
+    socket.emit("send_reset")
+  }
   if ((e.which === 82)) {
     socket.emit("send_reset")
   }

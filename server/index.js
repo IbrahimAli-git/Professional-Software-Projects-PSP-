@@ -27,7 +27,7 @@ let paneW = 800,
     d = {}, //Stores key presses, the key for the current direction is set to 'true'
     x = 3, //Movement speed
     startv = 65,
-    starth = 28,
+    starth = 29,
     currentv = startv,
     currenth = starth,
     lastinput = 0,
@@ -126,6 +126,8 @@ function reset() {
     currenth = starth;
     moveh = starth;
     moveV = startv;
+    moveh = starth;
+    moveV = startv;
     hasReset = true;
     timeLeft = 60;
     gameRunning = true;
@@ -154,6 +156,20 @@ io.on("connection", (socket) => { // creates socket.io connection
 
     socket.emit("receive_move", { v: currentv, h: currenth }) // sends current vertical and horizontal to client
     console.log("User connected: " + id)
+
+    socket.on("send_reset", (data) => {
+        reset();
+        score = 0;
+        for(var item of items){
+            item[4] = true;
+        }
+        itemStates = []
+        for(var item of items){
+            itemStates.push(item[4]);
+        }
+        socket.emit("item_state", {i1:itemStates[0], i2:itemStates[1], i3:itemStates[2], i4:itemStates[3], i5:itemStates[4]});
+        socket.broadcast.emit("item_state", {i1:itemStates[0], i2:itemStates[1], i3:itemStates[2], i4:itemStates[3], i5:itemStates[4]});
+    })
 
     socket.on("send_items", (data) => {
         if (items.length == 0) {
