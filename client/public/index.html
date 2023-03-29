@@ -94,12 +94,25 @@
     function on() {
       document.getElementById("overlay").style.display = "block"
       document.getElementById("overlaybkg").style.display = "block";
+
+      // may have to press brief so sound can play
+      //     - some browsers block autoplay
+      let background = document.querySelector("#backgroundSound");
+      background.play();
     }
 
     function off() {
       document.getElementById("overlay").style.display = "none"
       document.getElementById("overlaybkg").style.display = "none";
     }
+  </script>
+
+  <!-- Sound Effects -->
+  <script>
+    // Background
+    let background = document.querySelector("#backgroundSound");
+    background.play();
+    //background.volume = 0.2;
   </script>
 
   <!-- finding starting position -->
