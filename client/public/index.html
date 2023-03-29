@@ -26,24 +26,31 @@
     <div class="main">
       <div class="top-attributes">
         <h7 class="score" id="score">Team Score: 0</h7>
-        <!--<h7 class="score" id="time-left">Time Left: 0s</h7>
-        <h7 class="score" id="collisions">Collisions: 0</h7>
+        <h7 class="score" id="time-left">Time Left: 0s</h7>
+        <!--<h7 class="score" id="collisions">Collisions: 0</h7>
         <h7 class="score" id="sirection-changes">Direction Changes: 0</h7>-->
       </div>
 
       <!-- Playable Game Area -->
       <div class = "GameBox" id = "box">
+
         <div class="walls">
           <img class="wall-top" src="./Components/Walls/7HoleGirder.png" />
-          <div class="start-position"></div>
+          <div class="start-position"></div> <!-- Starting position area of character -->
           <img class="wall-left" src="./Components/Walls/5HoleGirder_Vertical.png" />
           <div class="walls-centre">
-            <img class="top" src="./Components/Walls/5HoleGirder.png" />
+            <img class="wheel2" src="./Components/Collectables/wheel.png" />
+            <img class="top" src="./Components/Walls/5HoleGirder.png" /> 
+            <img class="wheel1" src="./Components/Collectables/wheel.png" />
+            <img class="washer" src="./Components/Collectables/washer.png" />
             <img class="centre" src="./Components/Walls/5HoleGirder.png" />
             <img class="bottom" src="./Components/Walls/5HoleGirder.png" />
+            <img class="wheel3" src="./Components/Collectables/wheel.png" />
           </div>
+          <img class="nut" src="./Components/Collectables/nut.png" />
           <img class="wall-right" src="./Components/Walls/4HoleGirder.png" />
         </div>
+
         <div class = "character" id = "characterid"></div>
       </div>
     </div>
@@ -74,7 +81,7 @@
     <button onclick="on()" class="briefbtn">Brief</button>
   </footer>
 
-  <!-- JS for game brief overlay -->
+  <!-- Game brief overlay -->
   <script>
     function on() {
       document.getElementById("overlay").style.display = "block"
