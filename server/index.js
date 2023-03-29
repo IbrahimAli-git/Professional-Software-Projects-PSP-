@@ -42,11 +42,11 @@ let paneW = 800,
         var newh = parseInt(v, 10) - (d[a] ? x : 0) + (d[b] ? x : 0);
         if (newh < 0){
             reset();
-            return 35;
+            return starth;
         }
         else if (newh > wh){
             reset();
-            return 35;
+            return starth;
         }
         else{
             if (!wallCheckH(newh)){
@@ -75,11 +75,11 @@ let paneW = 800,
         var newv = parseInt(v, 10) - (d[a] ? x : 0) + (d[b] ? x : 0);
         if (newv < 0){
             reset();
-            return 65;
+            return startv;
         }
         else if (newv > wv){
             reset();
-            return 65;
+            return startv;
         }
         else{
             if (!wallCheckV(newv)){
