@@ -24,6 +24,10 @@
     </header>
 
     <div class="main">
+      <!-- Sound Effects -->
+      <audio id="hittingWall" autoplay src="./Components/Sounds/bounce.wav"></audio>
+      <audio id="backgroundSound" autoplay loop src="./Components/Sounds/pacmanTheme.mp3"></audio>
+
       <div class="top-attributes">
         <h7 class="score" id="score">Team Score: 0</h7>
         <!--<h7 class="score" id="time-left">Time Left: 0s</h7>
@@ -57,6 +61,7 @@
     </div>
 
     <script src = "/client/my-app/src/App.js" ></script>
+    <script src="/server/index.js"></script>
   </body>
 
   <!-- Game Brief -->
@@ -87,6 +92,9 @@
     function on() {
       document.getElementById("overlay").style.display = "block"
       document.getElementById("overlaybkg").style.display = "block";
+
+      let background = document.querySelector("#backgroundSound");
+      background.play();
     }
 
     function off() {
@@ -95,11 +103,29 @@
     }
   </script>
 
+  <!-- Sound Effects -->
+  <script>
+    /* doesn't work yet */
+    var hittingWall = document.querySelector("#hittingWall");
+    var hasHitWall = false;
+
+    if (hasHitWall != false) {
+      hittingWall.play();
+    }
+    else {
+      hittingWall.pause();
+    }
+
+    // Background
+    let background = document.querySelector("#backgroundSound");
+    background.play();
+    //background.volume = 0.2;
+  </script>
+
   <!-- finding starting position -->
   <script>
     var start = $(".start-position").first();
     var position = start.position();
-    //$("start-position").text("left: " + position.left + ", top: " + position.top);
     console.log("Position: left(x): " + position.left + ", top(y): " + position.top);
   </script>
 </html>
