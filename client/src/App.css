@@ -1,37 +1,8 @@
-/*.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-*/
-
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 header {
   background-color: #222222;
-  height: 88px;
+  min-height: 14vh;
   margin-bottom: auto;
 }
 
@@ -63,16 +34,24 @@ body {
   flex-direction: column;
 }
 
-.score {
-  position: absolute;
-  left: 1.5%;
-  padding: 10px;
-  font-size: 20px;
-  font-family: 'Press Start 2P', cursive;
-  font-weight: 50px;
-  border-radius: 5px;
+/* Game Trackers (team score... etc) */
+.top-attributes {
+  display: flex;
+  justify-content: space-around;
 }
 
+.score {
+  left: 1.5%;
+  padding: 10px;
+  font-size: 18px;
+  /*font-family: 'Press Start 2P', cursive; */
+  font-weight: bold;
+  border-radius: 5px;
+  position: relative;
+  align-content: center;
+}
+
+/* Brief Overlay */
 #overlay {
   position: fixed;
   display: none;
@@ -119,10 +98,7 @@ body {
   font-size: 20px;
 }
 
-/* br {
-  padding: 43px;
-}*/
-
+/* Footer */
 footer {
   background-color: black;
   color: black;
@@ -142,6 +118,7 @@ footer .briefbtn {
   left: 91%;
 }
 
+/* Playable Game Area */
 .GameBox {
   width: 800px;
   height: 400px;
@@ -154,6 +131,93 @@ footer .briefbtn {
   align-content: center;
 }
 
+/* Start position */
+.start-position {
+  background-color: yellow;
+  height: 35px;
+  width: 50px;
+  margin-left: 17px;
+}
+
+/* Collectable Items */
+#item1 {
+  position: absolute;
+  left: 200px;
+  top: 140px;
+  visibility: hidden;
+}
+
+#item2 {
+  position: absolute;
+  left: 745px;
+  top: 85px;
+  visibility: hidden;
+}
+
+#item3 {
+  position: absolute;
+  left: 400px;
+  top: 270px;
+  visibility: hidden;
+}
+
+#item4 { 
+  position: absolute;
+  left: 745px;
+  top: 300px;
+  visibility: hidden;
+}
+
+#item5 { /* nut */
+  position: absolute;
+  left: 90px;
+  top: 360px;
+  visibility: hidden;
+}
+
+/* Walls */
+.wall-top {
+ margin-top: 15px;
+ margin-left: 17px;
+}
+
+.wall-left {
+  margin-left: 17px;
+  margin-top: 5px;
+}
+
+.walls-centre {
+  display: inline-block;
+  position: absolute;
+}
+
+.walls-centre .top {
+  margin-top: 2%;
+  margin-left: 48%;
+  vertical-align: middle;
+}
+
+.walls-centre .centre {
+  margin-top: 6%;
+  margin-bottom: 15%;
+  margin-left: 25%;
+  vertical-align: middle;
+}
+
+.walls-centre .bottom {
+  margin-top: 15%;
+  margin-left: -60%;
+  vertical-align: middle;
+}
+
+.wall-right {
+  position: relative;
+  left: 85.5%;
+  margin-bottom: 10%;
+  justify-content: end;
+}
+
+/* Character */
 .character{
   height: 20px;
   width: 20px;
@@ -161,6 +225,6 @@ footer .briefbtn {
   background-color: red;
   
   position: absolute;
-  left: 300px;
-  top: 200px;
+  left: 35px;
+  top: 65px;
 }
