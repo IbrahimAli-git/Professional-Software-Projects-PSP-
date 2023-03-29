@@ -2,8 +2,9 @@ const express = require("express")
 const app = express()
 const http = require("http")
 const cors = require("cors")
-const {Server } = require("socket.io") // express server created using cors
+const { Server } = require("socket.io") // express server created using cors
 const { cursorTo } = require("readline")
+const { time } = require("console")
 app.use(cors({ origin: "*" })) // allows for all connections 
 
 const players = [0, 0, 0, 0] // stores a fixed no of players which are assigned a number
@@ -37,79 +38,81 @@ let paneW = 800,
     hasReset = false,
     itemStates = [],
     timeLeft = 60,
-    walls = [[8,50,2,798],[171,224,228,516],[78,368,2,53],[257,313,62,348],[86,141,396,686],[109,289,726,792]];//wall boundaries currently hard coded
+    collectedItems = 0,
+    gameRunning = true,
+    walls = [[8, 50, 2, 798], [171, 224, 228, 516], [78, 368, 2, 53], [257, 313, 62, 348], [86, 141, 396, 686], [109, 289, 726, 792]];//wall boundaries currently hard coded
 
-    function newh(v, a, b) { //calculates new vertical postion, ensures it's within game bounds
-        var newh = parseInt(v, 10) - (d[a] ? x : 0) + (d[b] ? x : 0);
-        if (newh < 0){
-            reset();
-            return 35;
-        }
-        else if (newh > wh){
-            reset();
-            return 35;
-        }
-        
-        if (!wallCheckH(newh)){
-            return newh;
-        }
-        else{
-            if (newh > currenth){
-                d[lastinput] = false;
-                d[37] = true;
-                lastinput = 37;
-                return currenth;
-            }
-            else{
-                d[lastinput] = false;
-                d[39] = true;
-                lastinput = 39;
-                return currenth
-            };
-        }
+function newh(v, a, b) { //calculates new vertical postion, ensures it's within game bounds
+    var newh = parseInt(v, 10) - (d[a] ? x : 0) + (d[b] ? x : 0);
+    if (newh < 0) {
+        reset();
+        return starth;
     }
-        
-    function newv(v, a, b) { //calculates new vertical postion, ensures it's within game bounds
-        var newv = parseInt(v, 10) - (d[a] ? x : 0) + (d[b] ? x : 0);
-        if (newv < 0){
-            reset();
-            return 65;
-        }
-        else if (newv > wv){
-            reset();
-            return 65;
-        }
-        
-        if (!wallCheckV(newv)){
-            return newv;
-        }
-        else{
-            if (newv > currentv){
-                d[lastinput] = false;
-                d[38] = true;
-                lastinput = 38;
-                return currentv;
-            }
-            else{
-                d[lastinput] = false;
-                d[40] = true;
-                lastinput = 40;
-                return currentv;
-            }
-        }
+    else if (newh > wh) {
+        reset();
+        return starth;
     }
 
-function wallCheckH(x){
+    if (!wallCheckH(newh)) {
+        return newh;
+    }
+    else {
+        if (newh > currenth) {
+            d[lastinput] = false;
+            d[37] = true;
+            lastinput = 37;
+            return currenth;
+        }
+        else {
+            d[lastinput] = false;
+            d[39] = true;
+            lastinput = 39;
+            return currenth
+        };
+    }
+}
+
+function newv(v, a, b) { //calculates new vertical postion, ensures it's within game bounds
+    var newv = parseInt(v, 10) - (d[a] ? x : 0) + (d[b] ? x : 0);
+    if (newv < 0) {
+        reset();
+        return startv;
+    }
+    else if (newv > wv) {
+        reset();
+        return startv;
+    }
+
+    if (!wallCheckV(newv)) {
+        return newv;
+    }
+    else {
+        if (newv > currentv) {
+            d[lastinput] = false;
+            d[38] = true;
+            lastinput = 38;
+            return currentv;
+        }
+        else {
+            d[lastinput] = false;
+            d[40] = true;
+            lastinput = 40;
+            return currentv;
+        }
+    }
+}
+
+function wallCheckH(x) {
     return walls.some(i => i[0] < currentv && currentv < i[1] && i[2] < x && x < i[3])
 }
 
-function wallCheckV(x){
+function wallCheckV(x) {
     return walls.some(i => i[0] < x && x < i[1] && i[2] < currenth && currenth < i[3])
 }
 
-function itemCheck(v,h) { // searches through items array for specific item
-    for(const item of items){
-        if((item[0] <= h && h <= item[1] && item[2] <= v && v <= item[3] && item[4] == true)){
+function itemCheck(v, h) { // searches through items array for specific item
+    for (const item of items) {
+        if ((item[0] <= h && h <= item[1] && item[2] <= v && v <= item[3] && item[4] == true)) {
             item[4] = false;
             // console.log(item.indexOf(item) + 2);
             return items.indexOf(item) + 1;
@@ -118,10 +121,31 @@ function itemCheck(v,h) { // searches through items array for specific item
     return 0;
 }
 
-function reset(){
+function reset() {
     currentv = startv;
     currenth = starth;
+    moveh = starth;
+    moveV = startv;
     hasReset = true;
+    timeLeft = 60;
+    gameRunning = true;
+}
+
+
+setInterval(timer, 1000);
+function timer() {
+    if (!gameRunning){
+
+    }
+    else{
+        if (timeLeft > 0 && collectedItems != 5) {
+            timeLeft--;
+            
+        } else {
+            gameRunning = false;
+            score += timeLeft;
+        }
+    }
 }
 
 io.on("connection", (socket) => { // creates socket.io connection
@@ -132,7 +156,7 @@ io.on("connection", (socket) => { // creates socket.io connection
     console.log("User connected: " + id)
 
     socket.on("send_items", (data) => {
-        if(items.length == 0){
+        if (items.length == 0) {
             items.push(data.d1);
             items.push(data.d2);
             items.push(data.d3);
@@ -140,15 +164,13 @@ io.on("connection", (socket) => { // creates socket.io connection
             items.push(data.d5);
         }
         itemStates = []
-        for(const item of items){
+        for (const item of items) {
             itemStates.push(item[4]);
         }
         console.log(items);
     })
-    
-    
-    
-    
+
+
     if (players[0] !== 0 && players[1] !== 0 && players[2] !== 0 && players[3] !== 0) { // checks if room is full
         console.log("Room is full")
     }
@@ -161,15 +183,12 @@ io.on("connection", (socket) => { // creates socket.io connection
             }
         }
     }
-    
+
     socket.emit("receive_index", playernum) // sending player number to client, determines move direction
     console.log(players)
+
+        
     
-    socket.on("send_input", (data) => { //recieves key press from client
-        d[lastinput] = false;
-        d[data] = true;
-        lastinput = data;
-    });
     
     socket.on("disconnect", (socket) => { // disconnects client and removes them from players array 
         console.log("User disconnected: " + id)
@@ -182,43 +201,74 @@ io.on("connection", (socket) => { // creates socket.io connection
         console.log(players)
     });
 
-    var timerId = setInterval(handler, 1001);
-    function handler() {
-      if (timeLeft >= 0) {
-        socket.emit("receive_time", timeLeft);
-        socket.broadcast.emit("receive_time", timeLeft);
-        timeLeft--;
-      } else {
-            socket.emit("stop_game");
-      }
-    }
-    // handler();
-    
-    setInterval(function () { // updates and sends new position to clients at a set interval
+    socket.on("send_reset", (data) => {
+        reset();
+        score = 0;
+        for(var item of items){
+            item[4] = true;
+        }
+        itemStates = []
+        for(var item of items){
+            itemStates.push(item[4]);
+        }
         socket.emit("item_state", {i1:itemStates[0], i2:itemStates[1], i3:itemStates[2], i4:itemStates[3], i5:itemStates[4]});
         socket.broadcast.emit("item_state", {i1:itemStates[0], i2:itemStates[1], i3:itemStates[2], i4:itemStates[3], i5:itemStates[4]});
-        socket.emit("current_score", {s: score});
-        moveV = newv(currentv, 38, 40);
-        moveH = newh(currenth, 37, 39);
-        
-        if(hasReset){
+    })
+    
+    
+        socket.on("send_input", (data) => { //recieves key press from client
             d[lastinput] = false;
-            socket.broadcast.emit("receive_move", { v: currentv, h: currenth })
-            hasReset = false;
-        }
-        else if (currentv !== moveV || currenth !== moveH) {
-            socket.broadcast.emit("receive_move", { v: moveV, h: moveH })
-            currentv = moveV;
-            currenth = moveH;
-        }
+            d[data] = true;
+            lastinput = data;
+        });
         
-        var i = itemCheck(moveV, moveH);
-        if(i != 0){
-            score++;
-            console.log("score: " + score);
-            socket.broadcast.emit("collect_item", i);
-        }
-    }, 50); // interval 50ms
+        setInterval(function () { // updates and sends new position to clients at a set interval
+            socket.emit("item_state", { i1: itemStates[0], i2: itemStates[1], i3: itemStates[2], i4: itemStates[3], i5: itemStates[4] });
+            socket.broadcast.emit("item_state", { i1: itemStates[0], i2: itemStates[1], i3: itemStates[2], i4: itemStates[3], i5: itemStates[4] });
+            socket.emit("current_score", { s: score });
+            socket.emit("receive_time", timeLeft);
+            socket.broadcast.emit("receive_time", timeLeft);
+            moveV = newv(currentv, 38, 40);
+            moveH = newh(currenth, 37, 39);
+    
+            if (hasReset) {
+                d[lastinput] = false;
+                currenth = starth;
+                currentv = startv;
+                socket.broadcast.emit("receive_move", { v: currentv, h: currenth })
+                socket.emit("receive_move", { v: currentv, h: currenth })
+                hasReset = false;
+            }
+
+            if (currentv !== moveV || currenth !== moveH) {
+                socket.broadcast.emit("receive_move", { v: moveV, h: moveH })
+                currentv = moveV;
+                currenth = moveH;
+            }
+
+
+    
+            var i = itemCheck(moveV, moveH);
+            if (i != 0) {
+                collectedItems++;
+                itemStates[i - 1] = false;
+                switch (i) {
+                    case 1: score += 5;
+                    break;
+                    case 2: score += 5;
+                    break;
+                    case 3: score += 5;
+                    break;
+                    case 4: score += 10;
+                    break;
+                    case 5: score += 15;
+                    break;
+                }
+                console.log("score: " + score);
+            }
+        }, 50); // interval 50ms
+
+    // handler();
 })
 
 server.listen(8080, "0.0.0.0", () => { // server listens for connections on port 8080

@@ -10,12 +10,12 @@ function App() {
 
 var box = $('#characterid'); //the character
 var playernum = 0;
-var dot1 = $('#item1');
-var dot2 = $('#item2');
-var dot3 = $('#item3');
-var dot4 = $('#item4');
-var dot5 = $('#item5');
-var timeLeft = 0;
+var dot1 = $('#item1'); // 5
+var dot2 = $('#item2'); // 5
+var dot3 = $('#item3'); // 5
+var dot4 = $('#item4'); // 10
+var dot5 = $('#item5'); // 15
+var timeLeft = 0; // add to score remaining time left
 
 
 socket.on("receive_index", (num) => { //every client that connects recieves a player number from 0-4 (0 if there are already 4 players)
@@ -54,27 +54,39 @@ socket.on("item_state", (data) =>{
   if(data.i1){
     document.getElementById("item1").style.visibility = "visible";   
   }
+  else {
+    document.getElementById("item1").style.visibility = "hidden";
+  }
   if(data.i2){
     document.getElementById("item2").style.visibility = "visible";   
+  }
+  else {
+    document.getElementById("item2").style.visibility = "hidden";
   }
   if(data.i3){
     document.getElementById("item3").style.visibility = "visible";   
   }
+  else {
+    document.getElementById("item3").style.visibility = "hidden";
+  }
   if(data.i4){
     document.getElementById("item4").style.visibility = "visible";   
+  }
+  else {
+    document.getElementById("item4").style.visibility = "hidden";
   }
   if(data.i5){
     document.getElementById("item5").style.visibility = "visible";   
   }
-});
-
-
-socket.on("collect_item", (data) => {
-  document.getElementById("item"+data).style.display = "none";
+  else {
+    document.getElementById("item5").style.visibility = "hidden";
+  }
 });
 
 $(window).keydown(function (e) { //when a key is pressed, it checks whether that player is allowed to use that key, then sends it to the server
-  
+  if ((e.which === 82)) {
+    socket.emit("send_reset")
+  }
   if ((e.which === 37 || e.which === 65) /*&& playernum === 1*/) {
     socket.emit("send_input", (37))
   }
@@ -92,7 +104,7 @@ $(window).keydown(function (e) { //when a key is pressed, it checks whether that
 socket.on("receive_time", (data) => {
   timeLeft = data;
   var elem = document.getElementById('time');
-  elem.innerHTML = timeLeft;
+  elem.innerHTML = data;
 
 })
 
