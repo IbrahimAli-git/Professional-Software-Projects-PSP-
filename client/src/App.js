@@ -9,7 +9,7 @@ function App() {
 }
 
 var box = $('#characterid'); //the character
-var    playernum = 0;
+var playernum = 0;
 var dot1 = $('#item1');
 var dot2 = $('#item2');
 var dot3 = $('#item3');
@@ -70,8 +70,7 @@ socket.on("item_state", (data) =>{
 
 
 socket.on("collect_item", (data) => {
-  console.log("hide item: " + data);
-  document.getElementById("item"+data).style.visibility = "hidden";
+  document.getElementById("item"+data).style.display = "none";
 });
 
 $(window).keydown(function (e) { //when a key is pressed, it checks whether that player is allowed to use that key, then sends it to the server
