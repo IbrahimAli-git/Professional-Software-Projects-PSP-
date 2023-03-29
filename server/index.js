@@ -26,7 +26,7 @@ let paneW = 800,
     d = {}, //Stores key presses, the key for the current direction is set to 'true'
     x = 3, //Movement speed
     startv = 65,
-    starth = 28,
+    starth = 29,
     currentv = startv,
     currenth = starth,
     lastinput = 0,
@@ -36,7 +36,6 @@ let paneW = 800,
     items = [],
     hasReset = false,
     itemStates = [],
-    timeLeft = 60,
     walls = [[8,50,2,798],[171,224,228,516],[78,368,2,53],[257,313,62,348],[86,141,396,686],[109,289,726,792]];//wall boundaries currently hard coded
 
     function newh(v, a, b) { //calculates new vertical postion, ensures it's within game bounds
@@ -49,24 +48,27 @@ let paneW = 800,
             reset();
             return 35;
         }
-        
-        if (!wallCheckH(newh)){
-            return newh;
-        }
         else{
-            if (newh > currenth){
-                d[lastinput] = false;
-                d[37] = true;
-                lastinput = 37;
-                return currenth;
+            if (!wallCheckH(newh)){
+                return newh;
             }
             else{
-                d[lastinput] = false;
-                d[39] = true;
-                lastinput = 39;
-                return currenth
-            };
+                if (newh > currenth){
+                    d[lastinput] = false;
+                    d[37] = true;
+                    lastinput = 37;
+                    return currenth;
+                }
+                else{
+                    d[lastinput] = false;
+                    d[39] = true;
+                    lastinput = 39;
+                    return currenth
+                };
+            }
         }
+        
+        
     }
         
     function newv(v, a, b) { //calculates new vertical postion, ensures it's within game bounds
@@ -79,24 +81,25 @@ let paneW = 800,
             reset();
             return 65;
         }
-        
-        if (!wallCheckV(newv)){
-            return newv;
-        }
         else{
-            if (newv > currentv){
-                d[lastinput] = false;
-                d[38] = true;
-                lastinput = 38;
-                return currentv;
+            if (!wallCheckV(newv)){
+                return newv;
             }
             else{
-                d[lastinput] = false;
-                d[40] = true;
-                lastinput = 40;
-                return currentv;
+                if (newv > currentv){
+                    d[lastinput] = false;
+                    d[38] = true;
+                    lastinput = 38;
+                    return currentv;
+                }
+                else{
+                    d[lastinput] = false;
+                    d[40] = true;
+                    lastinput = 40;
+                    return currentv;
+                }
             }
-        }
+        }        
     }
 
 function wallCheckH(x){
@@ -121,6 +124,8 @@ function itemCheck(v,h) { // searches through items array for specific item
 function reset(){
     currentv = startv;
     currenth = starth;
+    moveh = starth;
+    moveV = startv;
     hasReset = true;
 }
 
@@ -131,6 +136,20 @@ io.on("connection", (socket) => { // creates socket.io connection
     socket.emit("receive_move", { v: currentv, h: currenth }) // sends current vertical and horizontal to client
     console.log("User connected: " + id)
 
+    socket.on("send_reset", (data) => {
+        reset();
+        score = 0;
+        for(var item of items){
+            item[4] = true;
+        }
+        itemStates = []
+        for(var item of items){
+            itemStates.push(item[4]);
+        }
+        socket.emit("item_state", {i1:itemStates[0], i2:itemStates[1], i3:itemStates[2], i4:itemStates[3], i5:itemStates[4]});
+        socket.broadcast.emit("item_state", {i1:itemStates[0], i2:itemStates[1], i3:itemStates[2], i4:itemStates[3], i5:itemStates[4]});
+    })
+
     socket.on("send_items", (data) => {
         if(items.length == 0){
             items.push(data.d1);
@@ -140,7 +159,7 @@ io.on("connection", (socket) => { // creates socket.io connection
             items.push(data.d5);
         }
         itemStates = []
-        for(const item of items){
+        for(var item of items){
             itemStates.push(item[4]);
         }
         console.log(items);
@@ -180,33 +199,29 @@ io.on("connection", (socket) => { // creates socket.io connection
             }
         }
         console.log(players)
-    });
-
-    var timerId = setInterval(handler, 1001);
-    function handler() {
-      if (timeLeft >= 0) {
-        socket.emit("receive_time", timeLeft);
-        socket.broadcast.emit("receive_time", timeLeft);
-        timeLeft--;
-      } else {
-            socket.emit("stop_game");
-      }
-    }
-    // handler();
+    })
     
     setInterval(function () { // updates and sends new position to clients at a set interval
         socket.emit("item_state", {i1:itemStates[0], i2:itemStates[1], i3:itemStates[2], i4:itemStates[3], i5:itemStates[4]});
         socket.broadcast.emit("item_state", {i1:itemStates[0], i2:itemStates[1], i3:itemStates[2], i4:itemStates[3], i5:itemStates[4]});
         socket.emit("current_score", {s: score});
+
+        
         moveV = newv(currentv, 38, 40);
         moveH = newh(currenth, 37, 39);
         
         if(hasReset){
             d[lastinput] = false;
+            currenth = starth;
+            currentv = startv;
+            moveh = starth;
+            moveV = startv;
             socket.broadcast.emit("receive_move", { v: currentv, h: currenth })
+            socket.emit("receive_move", { v: currentv, h: currenth })
             hasReset = false;
         }
-        else if (currentv !== moveV || currenth !== moveH) {
+
+        if (currentv !== moveV || currenth !== moveH) {
             socket.broadcast.emit("receive_move", { v: moveV, h: moveH })
             currentv = moveV;
             currenth = moveH;
@@ -216,7 +231,8 @@ io.on("connection", (socket) => { // creates socket.io connection
         if(i != 0){
             score++;
             console.log("score: " + score);
-            socket.broadcast.emit("collect_item", i);
+            itemStates[i-1] = false;
+            console.log(items);
         }
     }, 50); // interval 50ms
 })

@@ -41,7 +41,7 @@ socket.on("receive_move", (data) => { //recieves new position from the server
 function cssData(dot) {
   var th = parseInt(dot.css("left").slice(0,3));
   var tv = parseInt(dot.css("top").slice(0,3));
-  var data=[th-30,th+30,tv-30,tv+30, true];
+  var data=[th-25,th+25,tv-25,tv+25, true];
   return data;
 }
 
@@ -54,17 +54,32 @@ socket.on("item_state", (data) =>{
   if(data.i1){
     document.getElementById("item1").style.visibility = "visible";   
   }
+  else{
+    document.getElementById("item1").style.visibility = "hidden";
+  }
   if(data.i2){
     document.getElementById("item2").style.visibility = "visible";   
+  }
+  else{
+    document.getElementById("item2").style.visibility = "hidden";
   }
   if(data.i3){
     document.getElementById("item3").style.visibility = "visible";   
   }
+  else{
+    document.getElementById("item3").style.visibility = "hidden";
+  }
   if(data.i4){
     document.getElementById("item4").style.visibility = "visible";   
   }
+  else{
+    document.getElementById("item4").style.visibility = "hidden";
+  }
   if(data.i5){
     document.getElementById("item5").style.visibility = "visible";   
+  }
+  else{
+    document.getElementById("item5").style.visibility = "hidden";
   }
 });
 
@@ -74,7 +89,9 @@ socket.on("collect_item", (data) => {
 });
 
 $(window).keydown(function (e) { //when a key is pressed, it checks whether that player is allowed to use that key, then sends it to the server
-  
+  if ((e.which === 82)) {
+    socket.emit("send_reset")
+  }
   if ((e.which === 37 || e.which === 65) /*&& playernum === 1*/) {
     socket.emit("send_input", (37))
   }
