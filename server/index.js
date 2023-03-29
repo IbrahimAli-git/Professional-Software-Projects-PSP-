@@ -154,23 +154,17 @@ io.on("connection", (socket) => { // creates socket.io connection
     
     setInterval(function () { // updates and sends new position to clients at a set interval
     
-        moveV = newv(currentv, 38, 40);
-
         if(hasReset){
             d[lastinput] = false;
-            socket.broadcast.emit("receive_move", { v: currentv, h: currenth })
+            socket.emit("receive_move", { v: currentv, h: currenth })
+            socket.broadcast.emit("receive_move", { v: moveV, h: moveH })
             hasReset = false;
         }
 
+        moveV = newv(currentv, 38, 40);
         moveH = newh(currenth, 37, 39);
         
-        if(hasReset){
-            d[lastinput] = false;
-            socket.broadcast.emit("receive_move", { v: currentv, h: currenth })
-            hasReset = false;
-        }
-        
-        else if (currentv !== moveV || currenth !== moveH) {
+        if (currentv !== moveV || currenth !== moveH) {
             socket.broadcast.emit("receive_move", { v: moveV, h: moveH })
             currentv = moveV;
             currenth = moveH;
