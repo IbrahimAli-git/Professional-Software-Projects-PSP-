@@ -185,6 +185,7 @@ io.on("connection", (socket) => { // creates socket.io connection
     var timerId = setInterval(handler, 1001);
     function handler() {
       if (timeLeft >= 0) {
+        socket.emit("receive_time", timeLeft);
         socket.broadcast.emit("receive_time", timeLeft);
         timeLeft--;
       } else {
