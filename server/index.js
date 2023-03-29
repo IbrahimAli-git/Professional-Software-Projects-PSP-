@@ -143,8 +143,9 @@ io.on("connection", (socket) => { // creates socket.io connection
             itemStates.push(item[4]);
         }
         console.log(items);
-        socket.emit("item_state", {i1:itemStates[0], i2:itemStates[1], i3:itemStates[2], i4:itemStates[3], i5:itemStates[4]});
     })
+    
+    
     
     
     if (players[0] !== 0 && players[1] !== 0 && players[2] !== 0 && players[3] !== 0) { // checks if room is full
@@ -181,6 +182,7 @@ io.on("connection", (socket) => { // creates socket.io connection
     })
     
     setInterval(function () { // updates and sends new position to clients at a set interval
+        socket.emit("item_state", {i1:itemStates[0], i2:itemStates[1], i3:itemStates[2], i4:itemStates[3], i5:itemStates[4]});
         socket.emit("current_score", {s: score});
         moveV = newv(currentv, 38, 40);
         moveH = newh(currenth, 37, 39);
