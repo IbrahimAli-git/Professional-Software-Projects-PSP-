@@ -87,9 +87,6 @@ $(window).keydown(function (e) { //when a key is pressed, it checks whether that
   if ((e.which === 82)) {
     socket.emit("send_reset")
   }
-  if ((e.which === 82)) {
-    socket.emit("send_reset")
-  }
   if ((e.which === 37 || e.which === 65) /*&& playernum === 1*/) {
     socket.emit("send_input", (37))
   }
