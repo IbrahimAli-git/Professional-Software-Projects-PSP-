@@ -118,6 +118,10 @@ footer .briefbtn {
   left: 91%;
 }
 
+.mute {
+  position: relative;
+}
+
 /* Playable Game Area */
 .GameBox {
   width: 800px;
