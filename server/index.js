@@ -129,20 +129,28 @@ function reset() {
     moveh = starth;
     moveV = startv;
     hasReset = true;
+    gameRunning = true;
 }
 
 
 setInterval(timer, 1000);
 function timer() {
-    if (!gameRunning){
-
+    if (!gameRunning) {
+        
     }
-    else{
+    else {
         if (timeLeft > 0 && collectedItems != 5) {
             timeLeft--;
-            
+
         } else {
             gameRunning = false;
+            for (var item of items) {
+                item[4] = false;
+            }
+            itemStates = []
+            for (var item of items) {
+                itemStates.push(item[4]);
+            }
             score += timeLeft;
         }
     }
@@ -154,21 +162,20 @@ io.on("connection", (socket) => { // creates socket.io connection
 
     socket.emit("receive_move", { v: currentv, h: currenth }) // sends current vertical and horizontal to client
     console.log("User connected: " + id)
-
+    
     socket.on("send_reset", (data) => {
         reset();
-        for(var item of items){
+        for (var item of items) {
             item[4] = true;
         }
         itemStates = []
-        for(var item of items){
+        for (var item of items) {
             itemStates.push(item[4]);
         }
-        socket.emit("item_state", {i1:itemStates[0], i2:itemStates[1], i3:itemStates[2], i4:itemStates[3], i5:itemStates[4]});
-        socket.broadcast.emit("item_state", {i1:itemStates[0], i2:itemStates[1], i3:itemStates[2], i4:itemStates[3], i5:itemStates[4]});
+        socket.emit("item_state", { i1: itemStates[0], i2: itemStates[1], i3: itemStates[2], i4: itemStates[3], i5: itemStates[4] });
+        socket.broadcast.emit("item_state", { i1: itemStates[0], i2: itemStates[1], i3: itemStates[2], i4: itemStates[3], i5: itemStates[4] });
         score = 0;
         timeLeft = 60;
-        gameRunning = true;
     })
 
     socket.on("send_items", (data) => {
@@ -203,9 +210,9 @@ io.on("connection", (socket) => { // creates socket.io connection
     socket.emit("receive_index", playernum) // sending player number to client, determines move direction
     console.log(players)
 
-        
-    
-    
+
+
+
     socket.on("disconnect", (socket) => { // disconnects client and removes them from players array 
         console.log("User disconnected: " + id)
         for (var i = 0; i < 4; i++) {
@@ -220,69 +227,69 @@ io.on("connection", (socket) => { // creates socket.io connection
     socket.on("send_reset", (data) => {
         reset();
         score = 0;
-        for(var item of items){
+        for (var item of items) {
             item[4] = true;
         }
         itemStates = []
-        for(var item of items){
+        for (var item of items) {
             itemStates.push(item[4]);
         }
-        socket.emit("item_state", {i1:itemStates[0], i2:itemStates[1], i3:itemStates[2], i4:itemStates[3], i5:itemStates[4]});
-        socket.broadcast.emit("item_state", {i1:itemStates[0], i2:itemStates[1], i3:itemStates[2], i4:itemStates[3], i5:itemStates[4]});
+        socket.emit("item_state", { i1: itemStates[0], i2: itemStates[1], i3: itemStates[2], i4: itemStates[3], i5: itemStates[4] });
+        socket.broadcast.emit("item_state", { i1: itemStates[0], i2: itemStates[1], i3: itemStates[2], i4: itemStates[3], i5: itemStates[4] });
     })
-    
-    
-        socket.on("send_input", (data) => { //recieves key press from client
+
+
+    socket.on("send_input", (data) => { //recieves key press from client
+        d[lastinput] = false;
+        d[data] = true;
+        lastinput = data;
+    });
+
+    setInterval(function () { // updates and sends new position to clients at a set interval
+        socket.emit("item_state", { i1: itemStates[0], i2: itemStates[1], i3: itemStates[2], i4: itemStates[3], i5: itemStates[4] });
+        socket.broadcast.emit("item_state", { i1: itemStates[0], i2: itemStates[1], i3: itemStates[2], i4: itemStates[3], i5: itemStates[4] });
+        socket.emit("current_score", { s: score });
+        socket.emit("receive_time", timeLeft);
+        socket.broadcast.emit("receive_time", timeLeft);
+        moveV = newv(currentv, 38, 40);
+        moveH = newh(currenth, 37, 39);
+
+        if (hasReset) {
             d[lastinput] = false;
-            d[data] = true;
-            lastinput = data;
-        });
-        
-        setInterval(function () { // updates and sends new position to clients at a set interval
-            socket.emit("item_state", { i1: itemStates[0], i2: itemStates[1], i3: itemStates[2], i4: itemStates[3], i5: itemStates[4] });
-            socket.broadcast.emit("item_state", { i1: itemStates[0], i2: itemStates[1], i3: itemStates[2], i4: itemStates[3], i5: itemStates[4] });
-            socket.emit("current_score", { s: score });
-            socket.emit("receive_time", timeLeft);
-            socket.broadcast.emit("receive_time", timeLeft);
-            moveV = newv(currentv, 38, 40);
-            moveH = newh(currenth, 37, 39);
-    
-            if (hasReset) {
-                d[lastinput] = false;
-                currenth = starth;
-                currentv = startv;
-                socket.broadcast.emit("receive_move", { v: currentv, h: currenth })
-                socket.emit("receive_move", { v: currentv, h: currenth })
-                hasReset = false;
-            }
+            currenth = starth;
+            currentv = startv;
+            socket.broadcast.emit("receive_move", { v: currentv, h: currenth })
+            socket.emit("receive_move", { v: currentv, h: currenth })
+            hasReset = false;
+        }
 
-            if (currentv !== moveV || currenth !== moveH) {
-                socket.broadcast.emit("receive_move", { v: moveV, h: moveH })
-                currentv = moveV;
-                currenth = moveH;
-            }
+        if (currentv !== moveV || currenth !== moveH) {
+            socket.broadcast.emit("receive_move", { v: moveV, h: moveH })
+            currentv = moveV;
+            currenth = moveH;
+        }
 
 
-    
-            var i = itemCheck(moveV, moveH);
-            if (i != 0) {
-                collectedItems++;
-                itemStates[i - 1] = false;
-                switch (i) {
-                    case 1: score += 5;
+
+        var i = itemCheck(moveV, moveH);
+        if (i != 0) {
+            collectedItems++;
+            itemStates[i - 1] = false;
+            switch (i) {
+                case 1: score += 5;
                     break;
-                    case 2: score += 5;
+                case 2: score += 5;
                     break;
-                    case 3: score += 5;
+                case 3: score += 5;
                     break;
-                    case 4: score += 10;
+                case 4: score += 10;
                     break;
-                    case 5: score += 15;
+                case 5: score += 15;
                     break;
-                }
-                console.log("score: " + score);
             }
-        }, 50); // interval 50ms
+            console.log("score: " + score);
+        }
+    }, 50); // interval 50ms
 
     // handler();
 })

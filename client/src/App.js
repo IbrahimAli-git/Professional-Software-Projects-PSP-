@@ -90,16 +90,16 @@ $(window).keydown(function (e) { //when a key is pressed, it checks whether that
   if ((e.which === 82)) {
     socket.emit("send_reset")
   }
-  if ((e.which === 37 || e.which === 65) && playernum === 1) {
+  if ((e.which === 37 || e.which === 65) /*&& playernum === 1*/) {
     socket.emit("send_input", (37))
   }
-  if ((e.which === 38 || e.which === 87) && playernum === 2) {
+  if ((e.which === 38 || e.which === 87) /*&& playernum === 2*/) {
     socket.emit("send_input", (38))
   }
-  if ((e.which === 39 || e.which === 68) && playernum === 3) {
+  if ((e.which === 39 || e.which === 68) /*&& playernum === 3*/) {
     socket.emit("send_input", (39))
   }
-  if ((e.which === 40 || e.which === 83) && playernum === 4) {
+  if ((e.which === 40 || e.which === 83) /*&& playernum === 4*/) {
     socket.emit("send_input", (40))
   }
 });
