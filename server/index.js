@@ -129,7 +129,6 @@ function reset() {
     moveh = starth;
     moveV = startv;
     hasReset = true;
-    gameRunning = true;
 }
 
 
@@ -159,7 +158,7 @@ function timer() {
 io.on("connection", (socket) => { // creates socket.io connection
     let id = socket.id; // id of current client
     let playernum = 0; // assigns a no to each client
-
+    
     socket.emit("receive_move", { v: currentv, h: currenth }) // sends current vertical and horizontal to client
     console.log("User connected: " + id)
     
@@ -176,8 +175,9 @@ io.on("connection", (socket) => { // creates socket.io connection
         socket.broadcast.emit("item_state", { i1: itemStates[0], i2: itemStates[1], i3: itemStates[2], i4: itemStates[3], i5: itemStates[4] });
         score = 0;
         timeLeft = 60;
+        gameRunning = true;
     })
-
+    
     socket.on("send_items", (data) => {
         if (items.length == 0) {
             items.push(data.d1);
