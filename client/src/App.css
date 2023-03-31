@@ -118,11 +118,15 @@ footer .briefbtn {
   left: 91%;
 }
 
+.mute {
+  position: relative;
+}
+
 /* Playable Game Area */
 .GameBox {
   width: 800px;
   height: 400px;
-  background-color: white;
+  background-color: lightgray;
   color: black;
   position: relative;
   margin: auto;
@@ -133,10 +137,10 @@ footer .briefbtn {
 
 /* Start position */
 .start-position {
-  background-color: yellow;
+  background-color: rgb(61, 48, 53);
   height: 35px;
-  width: 50px;
-  margin-left: 17px;
+  width: 35px;
+  margin-left: 20px;
 }
 
 /* Collectable Items */

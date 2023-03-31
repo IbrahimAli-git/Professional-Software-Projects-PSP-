@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <script src="https://kit.fontawesome.com/bd4343d5ba.js" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
@@ -24,8 +25,15 @@
     </header>
 
     <div class="main">
+      <!-- Sound Effects -->
+      <!--<audio id="hittingWall" autoplay src="./Components/Sounds/bounce.wav"></audio>-->
+      <audio id="backgroundSound" autoplay loop src="./Components/Sounds/pacmanTheme.mp3"></audio>
+
       <div class="top-attributes">
         <h7 class="score" id="score">Team Score: 0</h7>
+        
+        <h7 class="score ">Time Left: <h7 class="score" id="time">60</h7></h7>
+
         <!--<h7 class="score" id="time-left">Time Left: 0s</h7>
         <h7 class="score" id="collisions">Collisions: 0</h7>
         <h7 class="score" id="sirection-changes">Direction Changes: 0</h7>-->
@@ -72,13 +80,22 @@
           <br><br><br>
         <em style="font-size: medium;">
           You can only move the sprite in one direction.
-          <br>Figure out the key on your keyboard</em>
+          <br>Figure out the key on your keyboard.
+          <br> Press R to reset the game.</em>
         </p>
       </div>
     </div>
   </div>
   
   <footer>
+    <!-- Volume Buttons -->
+    <div onclick="unmute()" class="unmute">
+      <i class="fa-solid fa-volume-high"  style="color: #c4c4c4; font-size: 30px; position: absolute; left: 25.5px; bottom: 9.5px;" id="unmute"></i>
+    </div>
+    <div onclick="mute()" class="mute">
+      <i class="fa-solid fa-volume-xmark" style="color: #c4c4c4; font-size: 30px; position: absolute; left: 20px; top: 7px;" id="mute"  ></i>
+    </div>
+
     <button onclick="on()" class="briefbtn">Brief</button>
   </footer>
 
@@ -87,12 +104,41 @@
     function on() {
       document.getElementById("overlay").style.display = "block"
       document.getElementById("overlaybkg").style.display = "block";
+
+      // may have to press brief so sound can play
+      //     - some browsers block autoplay
+      let background = document.querySelector("#backgroundSound");
+      background.play();
     }
 
     function off() {
       document.getElementById("overlay").style.display = "none"
       document.getElementById("overlaybkg").style.display = "none";
     }
+  </script>
+
+  <!-- Sound Effects -->
+  <script>
+    /// Background
+    let background = document.querySelector("#backgroundSound");
+    document.getElementById("unmute").style.visibility = "hidden";
+
+    function unmute() {
+      document.getElementById("mute").style.zIndex = "100";
+      document.getElementById("unmute").style.zIndex = "-1";
+
+      background.pause();
+    }
+    
+    function mute() {
+      document.getElementById("unmute").style.zIndex = "100";
+      document.getElementById("unmute").style.visibility = "visible";
+      document.getElementById("mute").style.zIndex = "-1";
+      
+      background.play();
+    }
+
+    //background.volume = 0.2;
   </script>
 
   <!-- finding starting position -->
