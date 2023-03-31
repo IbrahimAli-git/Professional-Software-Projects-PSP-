@@ -10,7 +10,7 @@ function App() {
 
 var box = $('#characterid'), //the character
   playernum = 0,
-  id;
+  id,
   dot1 = $('#item1'), // 5
   dot2 = $('#item2'), // 5
   dot3 = $('#item3'), // 5

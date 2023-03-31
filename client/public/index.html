@@ -26,11 +26,7 @@
 
     <div class="main">
       <!-- Sound Effects -->
-<<<<<<< HEAD
-      <audio id="hittingWall" autoplay src="./Components/Sounds/bounce.wav"></audio>
-=======
       <!--<audio id="hittingWall" autoplay src="./Components/Sounds/bounce.wav"></audio>-->
->>>>>>> 7a45daff580fae1435912f1db2ff812c5a8a1a9c
       <audio id="backgroundSound" autoplay loop src="./Components/Sounds/pacmanTheme.mp3"></audio>
 
       <div class="top-attributes">
@@ -109,14 +105,6 @@
     function on() {
       document.getElementById("overlay").style.display = "block"
       document.getElementById("overlaybkg").style.display = "block";
-
-<<<<<<< HEAD
-=======
-      // may have to press brief so sound can play
-      //     - some browsers block autoplay
->>>>>>> 7a45daff580fae1435912f1db2ff812c5a8a1a9c
-      let background = document.querySelector("#backgroundSound");
-      background.play();
     }
 
     function off() {
@@ -127,22 +115,6 @@
 
   <!-- Sound Effects -->
   <script>
-<<<<<<< HEAD
-    /* doesn't work yet */
-    var hittingWall = document.querySelector("#hittingWall");
-    var hasHitWall = false;
-
-    if (hasHitWall != false) {
-      hittingWall.play();
-    }
-    else {
-      hittingWall.pause();
-    }
-
-    // Background
-    let background = document.querySelector("#backgroundSound");
-    background.play();
-=======
     /// Background
     let background = document.querySelector("#backgroundSound");
     document.getElementById("unmute").style.visibility = "hidden";
@@ -162,7 +134,6 @@
       background.play();
     }
 
->>>>>>> 7a45daff580fae1435912f1db2ff812c5a8a1a9c
     //background.volume = 0.2;
   </script>
 
