@@ -1,7 +1,7 @@
 import './App.css';
 import $, { data } from 'jquery'
 import io from "socket.io-client"
-const socket = io.connect("http://localhost:8080")
+const socket = io.connect("http://10.72.197.3:8080")
 // connects clients with server using current local ip address on port 8080
 // port 8080 used instead of 3000
 
@@ -24,7 +24,12 @@ socket.on("receive_index", (num) => { //every client that connects recieves a pl
   playernum = num;
   console.log("playernum: " + playernum)
 });
-
+socket.on("receive_change",() =>{
+  playernum++;
+  if (playernum==5){
+    playernum=1;
+  }
+})
 socket.on("current_score", (data) =>{ //recieves the current score from the server
   document.getElementById("score").innerHTML = "Score: " +data.s; //updates the score on screen
 });

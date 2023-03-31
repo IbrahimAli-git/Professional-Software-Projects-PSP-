@@ -249,7 +249,10 @@ io.on("connection", (socket) => { // creates socket.io connection
                 break;
             }
         }
-        socket.emit("receive_index", num)
+
+        socket.emit("receive_change");
+        socket.broadcast.emit("receive_change");
+
     });
     setInterval(function () { // updates and sends new position to clients at a set interval
         socket.emit("item_state", { i1: itemStates[0], i2: itemStates[1], i3: itemStates[2], i4: itemStates[3], i5: itemStates[4] });
