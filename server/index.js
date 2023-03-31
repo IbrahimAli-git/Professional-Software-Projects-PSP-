@@ -126,7 +126,25 @@ function reset() {
     moveV = startv;
     hasReset = true;
 }
-
+socket.on("send_change", (data) => { //recieves key press from client
+        var temp1;
+        var temp2;
+        var num;
+        temp1 = players[0];
+        temp2 = players[2];
+        players[0] = players[3];
+        players[2] = players[1];
+        players[1] = temp1;
+        players[3] = temp2;
+        for(const player of players){
+            if(data === player){
+                num=players.indexOf(player)
+                num++;
+                break;
+            }
+        }
+        socket.emit("recieve_change", num)
+    });
 setInterval(timer, 1000);
 function timer() {
     if (gameRunning) {
@@ -199,6 +217,7 @@ io.on("connection", (socket) => { // creates socket.io connection
         }
     }
 
+    socket.emit("receive_id", id)
     socket.emit("receive_index", playernum) // sending player number to client, determines move direction
     console.log(players)
 
