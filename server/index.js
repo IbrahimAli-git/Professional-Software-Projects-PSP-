@@ -3,8 +3,6 @@ const app = express()
 const http = require("http")
 const cors = require("cors")
 const { Server } = require("socket.io") // express server created using cors
-const { cursorTo } = require("readline")
-const { time } = require("console")
 app.use(cors({ origin: "*" })) // allows for all connections 
 
 const players = [0, 0, 0, 0] // stores a fixed no of players which are assigned a number
@@ -163,7 +161,7 @@ io.on("connection", (socket) => { // creates socket.io connection
     console.log("User connected: " + id)
     
     socket.on("send_reset", (data) => {
-        reset();
+        gameRunning = false;
         for (var item of items) {
             item[4] = true;
         }
@@ -171,10 +169,12 @@ io.on("connection", (socket) => { // creates socket.io connection
         for (var item of items) {
             itemStates.push(item[4]);
         }
-        socket.emit("item_state", { i1: itemStates[0], i2: itemStates[1], i3: itemStates[2], i4: itemStates[3], i5: itemStates[4] });
-        socket.broadcast.emit("item_state", { i1: itemStates[0], i2: itemStates[1], i3: itemStates[2], i4: itemStates[3], i5: itemStates[4] });
+        reset();
+        collectedItems=0;
         score = 0;
         timeLeft = 60;
+        socket.emit("item_state", { i1: itemStates[0], i2: itemStates[1], i3: itemStates[2], i4: itemStates[3], i5: itemStates[4] });
+        socket.broadcast.emit("item_state", { i1: itemStates[0], i2: itemStates[1], i3: itemStates[2], i4: itemStates[3], i5: itemStates[4] });
         gameRunning = true;
     })
     
