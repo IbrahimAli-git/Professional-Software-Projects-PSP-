@@ -143,7 +143,7 @@ socket.on("send_change", (data) => { //recieves key press from client
                 break;
             }
         }
-        socket.emit("recieve_change", num)
+        socket.emit("receive_change", num)
     });
 setInterval(timer, 1000);
 function timer() {
