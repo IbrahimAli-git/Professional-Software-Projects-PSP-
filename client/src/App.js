@@ -17,7 +17,7 @@ var box = $('#characterid'), //the character
   dot4 = $('#item4'), // 10
   dot5 = $('#item5'); // 15
 
-socket.on("recieve_id", (data) => {
+socket.on("receive_id", (data) => {
   id = data;
 });
 socket.on("receive_index", (num) => { //every client that connects recieves a player number from 0-4 (0 if there are already 4 players)
