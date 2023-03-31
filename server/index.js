@@ -124,21 +124,14 @@ function reset() {
     currenth = starth;
     moveh = starth;
     moveV = startv;
-    moveh = starth;
-    moveV = startv;
     hasReset = true;
 }
 
-
 setInterval(timer, 1000);
 function timer() {
-    if (!gameRunning) {
-        
-    }
-    else {
+    if (gameRunning) {
         if (timeLeft > 0 && collectedItems != 5) {
             timeLeft--;
-
         } else {
             gameRunning = false;
             for (var item of items) {
@@ -193,7 +186,6 @@ io.on("connection", (socket) => { // creates socket.io connection
         console.log(items);
     })
 
-
     if (players[0] !== 0 && players[1] !== 0 && players[2] !== 0 && players[3] !== 0) { // checks if room is full
         console.log("Room is full")
     }
@@ -210,9 +202,6 @@ io.on("connection", (socket) => { // creates socket.io connection
     socket.emit("receive_index", playernum) // sending player number to client, determines move direction
     console.log(players)
 
-
-
-
     socket.on("disconnect", (socket) => { // disconnects client and removes them from players array 
         console.log("User disconnected: " + id)
         for (var i = 0; i < 4; i++) {
@@ -223,7 +212,7 @@ io.on("connection", (socket) => { // creates socket.io connection
         }
         console.log(players)
     });
-
+  
     socket.on("send_reset", (data) => {
         reset();
         score = 0;
@@ -237,7 +226,6 @@ io.on("connection", (socket) => { // creates socket.io connection
         socket.emit("item_state", { i1: itemStates[0], i2: itemStates[1], i3: itemStates[2], i4: itemStates[3], i5: itemStates[4] });
         socket.broadcast.emit("item_state", { i1: itemStates[0], i2: itemStates[1], i3: itemStates[2], i4: itemStates[3], i5: itemStates[4] });
     })
-
 
     socket.on("send_input", (data) => { //recieves key press from client
         d[lastinput] = false;
@@ -253,7 +241,7 @@ io.on("connection", (socket) => { // creates socket.io connection
         socket.broadcast.emit("receive_time", timeLeft);
         moveV = newv(currentv, 38, 40);
         moveH = newh(currenth, 37, 39);
-
+        
         if (hasReset) {
             d[lastinput] = false;
             currenth = starth;
@@ -268,8 +256,6 @@ io.on("connection", (socket) => { // creates socket.io connection
             currentv = moveV;
             currenth = moveH;
         }
-
-
 
         var i = itemCheck(moveV, moveH);
         if (i != 0) {
@@ -290,8 +276,6 @@ io.on("connection", (socket) => { // creates socket.io connection
             console.log("score: " + score);
         }
     }, 50); // interval 50ms
-
-    // handler();
 })
 
 server.listen(8080, "0.0.0.0", () => { // server listens for connections on port 8080
