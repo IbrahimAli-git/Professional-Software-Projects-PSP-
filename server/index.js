@@ -198,7 +198,7 @@ io.on("connection", (socket) => { // creates socket.io connection
             }
         }
     }
-
+    socket.emit("receive_id", id)
     socket.emit("receive_index", playernum) // sending player number to client, determines move direction
     console.log(players)
 
@@ -232,7 +232,25 @@ io.on("connection", (socket) => { // creates socket.io connection
         d[data] = true;
         lastinput = data;
     });
-
+    socket.on("send_change", (data) => { //recieves key press from client
+        var temp1;
+        var temp2;
+        var num;
+        temp1 = players[0];
+        temp2 = players[2];
+        players[0] = players[3];
+        players[2] = players[1];
+        players[1] = temp1;
+        players[3] = temp2;
+        for(const player of players){
+            if(data === player){
+                num=players.indexOf(player)
+                num++;
+                break;
+            }
+        }
+        socket.emit("recieve_change", num)
+    });
     setInterval(function () { // updates and sends new position to clients at a set interval
         socket.emit("item_state", { i1: itemStates[0], i2: itemStates[1], i3: itemStates[2], i4: itemStates[3], i5: itemStates[4] });
         socket.broadcast.emit("item_state", { i1: itemStates[0], i2: itemStates[1], i3: itemStates[2], i4: itemStates[3], i5: itemStates[4] });

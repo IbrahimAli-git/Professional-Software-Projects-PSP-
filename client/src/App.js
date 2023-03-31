@@ -10,6 +10,7 @@ function App() {
 
 var box = $('#characterid'), //the character
   playernum = 0,
+  id;
   dot1 = $('#item1'), // 5
   dot2 = $('#item2'), // 5
   dot3 = $('#item3'), // 5
@@ -17,7 +18,9 @@ var box = $('#characterid'), //the character
   dot5 = $('#item5'), // 15
   timeLeft = 0; // add to score remaining time left
 
-
+socket.on("recieve_id", (data) => {
+  id = data;
+});
 socket.on("receive_index", (num) => { //every client that connects recieves a player number from 0-4 (0 if there are already 4 players)
   playernum = num;
   console.log("playernum: " + playernum)
@@ -89,6 +92,9 @@ socket.on("item_state", (data) =>{ //recieves the state of each item from the se
 $(window).keydown(function (e) { //when a key is pressed, it checks whether that player is allowed to use that key, then sends it to the server
   if ((e.which === 82)) {
     socket.emit("send_reset") //if keycode 82 ('r') is pressed it will tell the server to reset the game
+  }
+  if ((e.which === 84)) {
+    socket.emit("send_change", (id)) // if t is pressed users move keys will be switched
   }
 
   if ((e.which === 37 || e.which === 65) /*&& playernum === 1*/) {
