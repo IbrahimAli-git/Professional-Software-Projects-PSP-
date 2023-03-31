@@ -15,7 +15,7 @@ In terms of software this has been detailed in the client’s specification. It 
 
 ## How to Install and Run the Project
 
-1. Clone the project using the link
+1. Clone the project using the link: https://github.com/IbrahimAli-git/Professional-Software-Projects-PSP-.git
 2. Use 'cd server' to navigate to the server directory
 3. In the terminal run 'npm install'
 4. Once install has finished run 'npm start'
