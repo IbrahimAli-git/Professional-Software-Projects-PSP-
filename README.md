@@ -15,16 +15,15 @@ In terms of software this has been detailed in the client’s specification. It 
 
 ## How to Install and Run the Project
 
-1. Open a new codespace with the 'main' branch
+1. Clone the project using the link
 2. Use 'cd server' to navigate to the server directory
 3. In the terminal run 'npm install'
 4. Once install has finished run 'npm start'
 5. Then go to the client folder and the App.js file
 6. Change the http address to your current_ip_address:8080
-7. Do the same in the package.json for the proxy
-8. In the terminal navigate to the client directory
-9. Run 'npm install'
-10. Run 'npm start'
+7. In the terminal navigate to the client directory
+8. Run 'npm install'
+9. Run 'npm start'
 
 ## Collaborators
 
